@@ -1,4 +1,5 @@
-<?php
+
+<?php 
 $config = [
     'db_engine' => 'mysql',
     'db_host' => '127.0.0.1',
@@ -19,3 +20,4 @@ try {
 } catch (PDOException $e) {
     exit("Impossibile connettersi al database: " . $e->getMessage());
 }
+?>

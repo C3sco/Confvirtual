@@ -1,316 +1,225 @@
-drop database if exists CONFVIRTUAL;
-create database CONFVIRTUAL;
-use CONFVIRTUAL;
+DROP DATABASE IF EXISTS CONFVIRTUAL;
+CREATE DATABASE CONFVIRTUAL;
+USE CONFVIRTUAL;
 
-create table CONFERENZA(
-	AnnoEdizione INT DEFAULT 2000 UNIQUE,
-    Acronimo VARCHAR(20) UNIQUE,
+CREATE TABLE CONFERENZA(
+	AnnoEdizione INT DEFAULT 2000,
+    Acronimo VARCHAR(20),
     Nome VARCHAR(100),
-    Logo LONGBLOB,
-    Giorno DATE UNIQUE, 
-    Svolgimento ENUM("Attiva","Completata"),
-    TotaleSponsorizzazioni INT,
+    Logo CHAR,
+    Svolgimento ENUM("Attiva", "Completata"),
+    TotaleSponsorizzazioni INT DEFAULT 0,
     PRIMARY KEY(AnnoEdizione,Acronimo)
-    ) ENGINE=INNODB;
+) ENGINE=INNODB;
 
-create table SPONSOR(
-	Nome VARCHAR(100) PRIMARY KEY UNIQUE,
-	Logo LONGBLOB,
+CREATE TABLE SPONSOR(
+	Nome VARCHAR(100) PRIMARY KEY,
+	Logo Char,
 	Importo DOUBLE
-	) ENGINE=INNODB;
+) ENGINE=INNODB;
     
-create table DISPOSIZIONE(
+CREATE TABLE DISPOSIZIONE(
 	AnnoEdizioneConferenza INT DEFAULT 2000,
     AcronimoConferenza VARCHAR(20),
     NomeSponsor VARCHAR(100),
     PRIMARY KEY (AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor),
-    FOREIGN KEY(AnnoEdizioneConferenza) REFERENCES CONFERENZA(AnnoEdizione) ON DELETE CASCADE,
-    FOREIGN KEY(AcronimoConferenza) REFERENCES CONFERENZA(Acronimo) ON DELETE CASCADE,
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
     FOREIGN KEY(NomeSponsor) REFERENCES SPONSOR(Nome) ON DELETE CASCADE
-	
-    ) ENGINE=INNODB;
+) ENGINE=INNODB;
 
-create table GIORNATA(
-    Giorno DATE UNIQUE,
+CREATE TABLE GIORNATA(
     AnnoEdizioneConferenza INT,
-    AcronimoConferenza  VARCHAR(20),
-    PRIMARY KEY(Giorno,AnnoEdizioneConferenza,AcronimoConferenza),
-	FOREIGN KEY(AnnoEdizioneConferenza) REFERENCES CONFERENZA(AnnoEdizione),
-	FOREIGN KEY(AcronimoConferenza) REFERENCES CONFERENZA(Acronimo),
-    FOREIGN KEY(Giorno) REFERENCES CONFERENZA(Giorno)
-    )ENGINE=INNODB;
+    AcronimoConferenza VARCHAR(20),
+    Giorno DATE,
+    PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,Giorno),
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table SESSIONE(
+CREATE TABLE SESSIONE(
     Codice INT PRIMARY KEY,
-    Titolo VARCHAR(100),     #massimo 100 caratteri
-    NumeroPresentazioni INT,  #da collegare
+    Titolo VARCHAR(100),
+    NumeroPresentazioni INT DEFAULT 0,  #da collegare
     Inizio TIME, #check(Inizio>Fine),
     Fine TIME, #check(Fine<Inizio),
     Link VARCHAR(100),
-    GiornoGiornata DATE UNIQUE,
-    AnnoEdizioneConferenza INT UNIQUE,
-    AcronimoConferenza VARCHAR(20) UNIQUE,
-    FOREIGN KEY(GiornoGiornata) REFERENCES GIORNATA(Giorno),
-	FOREIGN KEY(AnnoEdizioneConferenza) REFERENCES CONFERENZA(AnnoEdizione),
-    FOREIGN KEY(AcronimoConferenza) REFERENCES CONFERENZA(Acronimo)
-	) ENGINE=INNODB;
+    GiornoGiornata DATE,
+    AnnoEdizioneConferenza INT,
+    AcronimoConferenza VARCHAR(20),
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE
+) ENGINE=INNODB;
     
-create table PRESENTAZIONE(
+CREATE TABLE PRESENTAZIONE(
     Codice INT PRIMARY KEY,
-    Inizio TIME,#check(Inizio <(SELECT Fine FROM SESSIONE) AND Inizio >(SELECT INIZIO
-                #FROM SESSIONE)),
-    Fine TIME, #check(Fine <(SELECT Fine FROM SESSIONE) AND Fine >(SELECT INIZIO
-                #FROM SESSIONE)),
+    Inizio TIME,#check(Inizio <(SELECT Fine FROM SESSIONE) AND Inizio >(SELECT INIZIO FROM SESSIONE)),
+    Fine TIME, #check(Fine <(SELECT Fine FROM SESSIONE) AND Fine >(SELECT INIZIO FROM SESSIONE)),
     NumeroSequenza INT #all'interno della sessione
     #non si possono avere prestazioni che eccedano l'orario di inizio/fine della sessione
+) ENGINE=INNODB;
 
-	) ENGINE=INNODB;
-
-create table FORMAZIONE(
+CREATE TABLE FORMAZIONE(
 	CodiceSessione INT,
     CodicePresentazione INT,
     PRIMARY KEY(CodiceSessione,CodicePresentazione),
-    FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice),
-	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-    ) ENGINE=INNODB;
+    FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice) ON DELETE CASCADE,
+	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table ARTICOLO(
+CREATE TABLE ARTICOLO(
 	CodicePresentazione INT PRIMARY KEY,
 	Titolo VARCHAR(100),
     NumeroPagine INT,
-    StatoSvolgimento ENUM("Coperto","Non coperto"),
+    StatoSvolgimento ENUM("Coperto", "Non coperto"),
     UsernameUtente VARCHAR(100),
-	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-	) ENGINE=INNODB;
+	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+) ENGINE=INNODB;
     
-    create table PAROLACHIAVE(
+CREATE TABLE PAROLACHIAVE(
     Parola VARCHAR(20),
     CodicePresentazione INT,
     PRIMARY KEY(Parola,CodicePresentazione),
-	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-    )ENGINE=INNODB;
-    
+	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+)ENGINE=INNODB;
 	
-CREATE table AUTORE(
+CREATE TABLE AUTORE(
 	CodicePresentazione INT,
     Nome VARCHAR(100),
     Cognome VARCHAR(100),
     PRIMARY KEY(CodicePresentazione,Nome,Cognome),
-    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-    ) ENGINE=INNODB;
-	
-	
-create table TUTORIAL(
+    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+) ENGINE=INNODB;
+		
+CREATE TABLE TUTORIAL(
 	CodicePresentazione INT PRIMARY KEY,
     Titolo VARCHAR(100),
     Abstract VARCHAR(500),
 	LinkRisorsa VARCHAR(100) DEFAULT NULL,
     DescrizioneRisorsa VARCHAR(100) DEFAULT NULL,
-    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-	) ENGINE=INNODB;
+    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+) ENGINE=INNODB;
 	
-create table UTENTE(
+CREATE TABLE UTENTE(
     Username VARCHAR(100) PRIMARY KEY,
     Password VARCHAR(100),
     Nome VARCHAR(100),
     Cognome VARCHAR(100),
     DataNascita DATE,
     LuogoNascita VARCHAR(100)
-	) ENGINE=INNODB;
+) ENGINE=INNODB;
 
-create table ISCRIZIONE(
+CREATE TABLE ISCRIZIONE(
 	AnnoEdizioneConferenza INT,
     AcronimoConferenza  VARCHAR(20),
     UsernameUtente VARCHAR(100),
     PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente),
-	FOREIGN KEY(AnnoEdizioneConferenza) REFERENCES CONFERENZA(AnnoEdizione),
-	FOREIGN KEY(AcronimoConferenza) REFERENCES CONFERENZA(Acronimo),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-    ) ENGINE=INNODB;
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table PRESENTER(
+CREATE TABLE PRESENTER(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
 	Curriculum VARCHAR(30),
     Foto LONGBLOB,
     NomeUni VARCHAR(100),
 	NomeDipartimento VARCHAR(100),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-	) ENGINE=INNODB;
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table SPEAKER(
+CREATE TABLE SPEAKER(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
 	Curriculum VARCHAR(30),
     Foto LONGBLOB,
     NomeUni VARCHAR(100),
 	NomeDipartimento VARCHAR(100),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-	) ENGINE=INNODB;
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table AMMINISTRATORE(
+CREATE TABLE AMMINISTRATORE(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-	) ENGINE=INNODB;
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
 
-create table VALUTAZIONE(
+CREATE TABLE VALUTAZIONE(
 	Voto INT CHECK(Voto>0 AND Voto<10),
-    Note VARCHAR(50)
-    ) ENGINE=INNODB;
+    Note VARCHAR(100)
+) ENGINE=INNODB;
 
-create table MESSAGGIO(
+CREATE TABLE MESSAGGIO(
 	CodiceSessione INT,
     UsernameUtente VARCHAR(100),
 	DataMessaggio DATE,
     TestoMessaggio VARCHAR(500),
     PRIMARY KEY(CodiceSessione,UsernameUtente),
-    FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-	) ENGINE=INNODB;
+    FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice) ON DELETE CASCADE,
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+    #La chat consente l’inserimento di messaggi solo nell’orario
+	#di inizio della sessione, e si disattiva immediatamente dopo l’orario di fine della stessa.
+) ENGINE=INNODB;
     
-create table DIMOSTRAZIONE(
+CREATE TABLE DIMOSTRAZIONE(
 	UsernameUtente VARCHAR(100),
 	CodicePresentazione INT,
     PRIMARY KEY(UsernameUtente,CodicePresentazione),
-    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-    ) ENGINE=INNODB;
+    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE,
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
     
-create table CREAZIONE(
+CREATE TABLE CREAZIONE(
 	AnnoEdizioneConferenza INT,
     AcronimoConferenza VARCHAR(20),
     UsernameUtente VARCHAR(100),
     PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente),
-    FOREIGN KEY(AnnoEdizioneConferenza) REFERENCES CONFERENZA(AnnoEdizione),
-	FOREIGN KEY(AcronimoConferenza) REFERENCES CONFERENZA(Acronimo),
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username)
-    ) ENGINE=INNODB;
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+) ENGINE=INNODB;
     
-create table LISTA(
+CREATE TABLE LISTA(
 	UsernameUtente VARCHAR(100),
 	CodicePresentazione INT,
     PRIMARY KEY(UsernameUtente,CodicePresentazione),
-	FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username),
-    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice)
-    ) ENGINE=INNODB;
+	FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE,
+    FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
+) ENGINE=INNODB;
+
+
+
+
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "x", "Attiva", 2);
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "FRUCT", "IEEE FRUCT Conference", "x", "Completata", 1);
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "AIVR", "Conference on Artificial Intelligence and Virtual Reality", "x", "Attiva", 1);
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2021, "CogSIMA", " Conference on Cognitive and Computational Aspects of Situation Management", "x", "Completata", 0);
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "WIT", "Workshop On Deriving Insights From User-Generated Text", "x", "Attiva", 1);
+INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "SPNLP", "Workshop on Structured Prediction for NLP", "x", "Attiva", 2);
     
-    #La chat consente l’inserimento di messaggi solo nell’orario
-	#di inizio della sessione, e si disattiva immediatamente dopo l’orario di fine della stessa.
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "ICSI", "2022-03-15");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "ICSI", "2022-03-16");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "ICSI", "2022-03-17");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "FRUCT", "2022-01-05");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "AIVR", "2022-06-22");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "AIVR", "2022-06-23");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2021, "CogSIMA", "2021-12-03");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "WIT", "2022-04-02");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "WIT", "2022-04-03");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "WIT", "2022-04-04");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-27");
+INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-28");
 
-DELIMITER $
-create procedure AUTENTICAZIONE(IN UsernameUtenteI VARCHAR(100), IN PasswordUtenteI VARCHAR(100))
-BEGIN
-	DECLARE a VARCHAR(100);
-	DECLARE UsernameUtenteX VARCHAR(100);
-    DECLARE PasswordUtenteX VARCHAR(100);
-    SET UsernameUtenteX =(SELECT Username FROM UTENTE WHERE(UsernameUtenteX=UsernameUtenteI));
-    SET PasswordUtenteX =(SELECT Password FROM UTENTE WHERE(PasswordUtenteX=PasswordUtenteI));
-	IF(UsernameUtenteX=1 AND PasswordUtenteX=1) THEN
-    SET a = "Benvenuto";
-    END IF;
-END $
-DELIMITER ;
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Mastercard", "x", 1000000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("PlayStation", "x", 500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("FedEx", "x", 1500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Adidas", "x", 275000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Nike", "x", 750000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Visa", "x", 1250000);
 
-
-DELIMITER $
-drop procedure if EXISTS REGISTRAZIONE $
-create procedure REGISTRAZIONE(IN UsernameI VARCHAR(100), IN PasswordI VARCHAR(100), IN NomeI VARCHAR(100),
-IN CognomeI VARCHAR(100), IN DataNascitaI DATE, IN LuogoNascitaI VARCHAR(100))
-BEGIN 
-	DECLARE UsernameX VARCHAR(100);
-	SET UsernameX =(SELECT Username FROM UTENTE WHERE(Username=UsernameUtenteI));
-		IF(UsernameX<>1) THEN
-		INSERT INTO UTENTE(Username,Password,Nome,Cognome,DataNascita,LuogoNascita) VALUES (UsernameI,PasswordI,NomeI,
-		CognomeI,DataNascitaI,LuogoNascitaI);
-		END IF;
-END $ 
-DELIMITER ;
-
-CREATE VIEW CONFERENZE_DISPONIBILI(Nome,Acronimo,Giorno) AS
-	SELECT Nome,Acronimo,Giorno FROM CONFERENZA WHERE(Svolgimento<>"Completato") GROUP BY Giorno;
-    
-
-DELIMITER $
-create procedure REGISTRAZIONE_CONFERENZA(IN AnnoEdizioneConferenzaI INT, IN AcronimoConferenzaI VARCHAR(20),
- IN UsernameUtenteI VARCHAR(100))
-BEGIN
-	DECLARE AnnoEdizioneConferenzaX INT DEFAULT YEAR(NOW());
-    #DECLARE AcronimoConferenzaX VARCHAR(20);
-    DECLARE UsernameUtenteX VARCHAR(100);
-	SET AnnoEdizioneConferenzaX =(SELECT AnnoEdizione FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI
-    AND Svolgimento<>"Completato"));
-    #SET AcronimoConferenzaX =(SELECT Acronimo FROM CONFERENZA WHERE(Acronimo=AcronimoConferenzaI)
-    SET UsernameUtenteX =(SELECT Username FROM UTENTE WHERE(Username=UsernameUtenteI));
-	IF(AnnoEdizioneX=1 AND UsernameUtenteX=1) THEN
-    INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
-    END IF;
-END $
-DELIMITER ;
-
-
-
-CREATE VIEW SESSIONI_PRESENTAZIONI(Sessione,Giorno,Presentazione,Inizio,Fine) AS
-	SELECT SESSIONE.Titolo,SESSIONE.GiornoGiornata,PRESENTAZIONE.Codice,PRESENTAZIONE.Inizio,PRESENTAZIONE.Fine FROM SESSIONE,PRESENTAZIONE,FORMAZIONE
-    WHERE (FORMAZIONE.CodiceSessione=SESSIONE.Codice AND FORMAZIONE.CodicePresentazione=PRESENTAZIONE.Codice) GROUP BY SESSIONE.Titolo,SESSIONE.GiornoGiornata;
-
-
-
-CREATE VIEW VISUALIZZA_MESSAGGI(CodiceSessione,UsernameUtente,TestoMessaggio,DataMessaggio) AS
-	SELECT * FROM MESSAGGIO
-
-
-
-DELIMITER $
-create procedure INSERIMENTO_MESSAGGIO(IN CodiceSessioneI INT, IN UsernameUtenteI VARCHAR(100), IN TestoMessaggioI VARCHAR(500)) 
-BEGIN
-	DECLARE UsernameUtenteX VARCHAR(100);
-    DECLARE CodiceSessioneX INT DEFAULT 0;
-    SET UsernameUtenteX =(SELECT Username FROM UTENTE WHERE(Username=UsernameUtenteI));
-    SET CodiceSessioneX =(SELECT Codice FROM SESSIONE WHERE(Codice=CodiceSessioneI));
-    IF(UsernameUtenteX=1 AND CodiceSessioneX=1) THEN
-    INSERT INTO MESSAGGIO(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) VALUES (CodiceSessioneI,UsernameUtenteI,DATE.NOW(),TestoMessaggioI);
-    END IF;
-    
-END $
-DELIMITER ;
-
-
-
-
-
-CREATE VIEW NUMERO_CONFERENZE_REGISTRATE(Nome,Numero) AS
-	SELECT Nome,COUNT(*) FROM CONFERENZA GROUP BY Nome;
-
-CREATE VIEW NUMERO_CONFERENZE_ATTIVE(Nome,Numero) AS
-	SELECT Nome,COUNT(*) FROM CONFERENZA WHERE(Svolgimento="Attiva") GROUP BY Nome;
-    
-
-CREATE VIEW NUMERO_UTENTI_REGISTRATI(Username,Numero) AS
-	SELECT Username,COUNT(*) FROM UTENTE GROUP BY Username;
-
-#CREATE VIEW CLASSIFICA_SPEAKER_PRESENTER(UsernameUtente,Posizione) AS
-#	SELECT UsernameUtente,Voto
-/*
-#POPOLAMENTO
-INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Giorno,Svolgimento,TotaleSponsorizzazioni) VALUES ();
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ();
-INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,NomeSponsor) VALUES ();
-INSERT INTO GIORNATA(Giorno,AnnoEdizioneConferenza,AcronimoConferenza) VALUES ();
-INSERT INTO SESSIONE(Codice,Titolo,NumeroPresentazioni,Inizio,Fine,Link,GiornoGiornata,AnnoEdizioneConferenza,AcronimoConferenza) VALUES ();
-INSERT INTO PRESENTAZIONE(Codice,Inizio,Fine,NumeroSequenza) VALUES ();
-INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES ();
-INSERT INTO ARTICOLO(CodicePresentazione,Titolo,NumeroPagine,StatoSvolgimento,UsernametUtente) VALUES ();
-INSERT INTO PAROLACHIAVE(Parola,CodicePresentazione) VALUES ();
-INSERT INTO AUTORE(CodicePresentazione,Nome,Cognome) VALUES ();
-INSERT INTO TUTORIAL(CodicePresentazione,Titolo,Abstract,LinkRisorsa,DescirzioneRisorsa) VALUES ();
-INSERT INTO UTENTE(Username,Password,Nome,Cognome,DataNascita,LuogoNascita) VALUES ();
-INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES ();
-INSERT INTO PRESENTER(UsernameUtente,Curriculum,Foto,NomeUni,NomeDipartimento) VALUES ();
-INSERT INTO SPEAKER(UsernameUtente,Curriculum,Foto,NomeUni,NomeDipartimento) VALUES ();
-INSERT INTO AMMINISTRATORE(UsernameUtente) VALUES ();
-INSERT INTO VALUTAZIONE(Voto,Note) VALUES ();
-INSERT INTO CHAT(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) VALUES ();
-INSERT INTO DIMOSTRAZIONE(UsernameUtente,CodicePresentazione) VALUES ();
-INSERT INTO CREAZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES ();
-INSERT INTO LISTA(UsernameUtente,CodicePresentazione) VALUES ();
-
-
-    	
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "FedEx");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "Adidas");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "FRUCT", "Visa");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "AIVR", "FedEx");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "WIT", "Mastercard");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "SPNLP", "PlayStation");
+INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "SPNLP", "Nike");
