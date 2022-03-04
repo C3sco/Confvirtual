@@ -70,7 +70,6 @@
         <li style="float:right"><a class="active" href="../html/paginaIniziale.html"><i class="fa fa-home"></i></a></li>
         <li><a href="../php/login.php">Login</a></li>
         <li><a href="../php/register.php">Registrazione</a></li>
-        <li><a href="../php/logout.php">Logout</a></li>
         <li> <p style="color: white"><?php echo $templateParams["conferenze"][0]["NumConf"]?></p></li>
         <li> <p style="color: white"><?php echo $templateParams["conferenzeAttive"][0]["NumConfAtt"]?></p></li>
         <li> <p style="color: white"><?php echo $templateParams["utenti"][0]["NumUtenti"]?></p></li>

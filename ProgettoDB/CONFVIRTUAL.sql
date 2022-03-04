@@ -233,3 +233,13 @@ INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) 
 
 INSERT INTO UTENTE(Username, Passwordd, Nome, Cognome, DataNascita, LuogoNascita) VALUES ("Mari", "Mari", "Marianna", "Gimigliano", "2000-10-13", "Cesena");
 INSERT INTO UTENTE(Username, Passwordd, Nome, Cognome, DataNascita, LuogoNascita) VALUES ("Pietro1", 111, "Pietro", "Lelli", "2000-03-06", "Cesena");
+
+
+
+CREATE VIEW CONFERENZE_DISPONIBILI(Nome,Acronimo,AnnoEdizione,Logo,Giorno) AS 
+SELECT Nome,Acronimo,AnnoEdizione,Logo,Giorno FROM CONFERENZA, GIORNATA 
+WHERE (Acronimo=AcronimoConferenza) AND (AnnoEdizione=AnnoEdizioneConferenza) AND (Svolgimento<>"Completata")
+
+
+
+

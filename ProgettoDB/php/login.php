@@ -14,7 +14,7 @@
     }
     
     if(!empty($_SESSION['username'])){
-        header("location: home.php");  
+        header("location: paginaUtente.php");  
     } else{
         require 'template/templateLogin.php';
     }

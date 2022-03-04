@@ -58,5 +58,51 @@
             $stmt->execute();
         }
 
+        public function getConferenze(){
+            $query = "SELECT DISTINCT Nome, Acronimo,AnnoEdizione,Logo FROM conferenze_disponibili";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getConferenzaByNome($nome){
+            $query = "SELECT AnnoEdizione, Acronimo FROM CONFERENZA WHERE Nome=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s',$nome);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getDateConferenza($nomeConf){
+            $query = "SELECT Giorno FROM conferenze_disponibili WHERE Nome=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s',$nomeConf);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function insertIscrizione($annoEdizioneConferenza, $acronimoConferenza, $usernameUtente){
+            $query= "INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (?,?,?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('sss', $annoEdizioneConferenza, $acronimoConferenza, $usernameUtente);
+            $stmt->execute();
+        }
+
+        public function getSessionibyConferenza($acronimoConf){
+            $query = "SELECT * FROM SESSIONE WHERE AcronimoConferenza=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s',$acronimoConf);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
     }
 ?>
