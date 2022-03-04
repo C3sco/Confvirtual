@@ -23,16 +23,27 @@
     </ul>
 
     <button type="button" class="btn btn-outline-secondary"><a class="text-reset" href="registrazioneConf.php?nome=<?php echo $nomeConf?>">Registrati alla conferenza</a></button>
-    <h1>Sessioni della conferenza:</h1>
+    <h1>Sessioni giornaliere della conferenza:</h1>
     <?php foreach($templateParams['sessione'] as $sessione): ?>
-    <h3>Codice: <?php echo $sessione["Codice"]?></h3>
-    <h3>Titolo: <?php echo $sessione["Titolo"]?></h3>
-    <h3>NumeroPresentazioni: <?php echo $sessione["NumeroPresentazioni"]?></h3>
-    <h3>Ora inizio: <?php echo $sessione["Inizio"]?></h3>
-    <h3>Ora fine: <?php echo $sessione["Fine"]?></h3>
-    <h3>Link: <?php echo $sessione["Link"]?></h3>
-
-  <?php endforeach; ?>
+      <h3>Data: <?php echo $sessione["GiornoGiornata"]?></h3>
+      <h3>Codice: <?php echo $sessione["Codice"]?></h3>
+      <h3>Titolo: <?php echo $sessione["Titolo"]?></h3>
+      <h3>Numero Presentazioni: <?php echo $sessione["NumeroPresentazioni"]?></h3>
+      <h3>Orario di inizio: <?php echo $sessione["Inizio"]?></h3>
+      <h3>Orario di fine: <?php echo $sessione["Fine"]?></h3>
+      <h3>Link alla stanza Teams: <?php echo $sessione["Link"]?></h3>
+      <br/>
+      <h1>Presentazioni della sessione:</h1>
+      <?php foreach($dbh->getPresentazioniBySessione($sessione["Codice"]) as $presentazione): ?>
+        <h3>Codice: <?php echo $presentazione["Codice"]?></h3>
+        <h3>Orario di inizio: <?php echo $presentazione["Inizio"]?></h3>
+        <h3>Orario di fine: <?php echo $presentazione["Fine"]?></h3>
+        <h3>Numero di sequenza nella sessione: <?php echo $presentazione["NumeroSequenza"]?></h3>
+        <h3><?php echo "------------------------"?></h3>
+      <?php endforeach; ?>
+      <h3><?php echo "----------------------------------------------------------------"?></h3>
+      <br/>
+    <?php endforeach; ?>
 
 <div class="parallax">
 

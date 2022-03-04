@@ -23,18 +23,17 @@
       </ul>
 
 <div class="parallax">
-    <h1>Conferenze</h1>
+    <h1>Conferenze disponibili</h1>
     <?php foreach($templateParams['conferenze'] as $conferenza): ?>
-    <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>"><?php echo $conferenza["Nome"]?></a>
-    <h3>Acronimo: <?php echo $conferenza["Acronimo"]?></h3>
-    <h3>AnnoEdizione: <?php echo $conferenza["AnnoEdizione"]?></h3>
-    <h3>Logo: <?php echo $conferenza["Logo"]?></h3>
-    <?php foreach($dbh->getDateConferenza($conferenza["Nome"]) as $data): ?>
-    <h3>Giorno: <?php echo $data["Giorno"]?></h3>
+      <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>"><?php echo $conferenza["Nome"]?></a>
+      <h3>Acronimo: <?php echo $conferenza["Acronimo"]?></h3>
+      <h3>Logo: <?php echo $conferenza["Logo"]?></h3>
+      <h3>Giornate di svolgimento:</h3>
+      <?php foreach($dbh->getDateConferenza($conferenza["Nome"]) as $data): ?>
+        <h3><?php echo $data["Giorno"]?></h3>
+      <?php endforeach; ?>
+      <br/>
     <?php endforeach; ?>
-
-
-  <?php endforeach; ?>
 </div>
 
 </body>

@@ -59,7 +59,7 @@
         }
 
         public function getConferenze(){
-            $query = "SELECT DISTINCT Nome, Acronimo,AnnoEdizione,Logo FROM conferenze_disponibili";
+            $query = "SELECT DISTINCT Nome, Acronimo, AnnoEdizione, Logo FROM conferenze_disponibili";
             $stmt = $this->db->prepare($query);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -98,6 +98,16 @@
             $query = "SELECT * FROM SESSIONE WHERE AcronimoConferenza=?";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s',$acronimoConf);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getPresentazioniBySessione($codiceSessione){
+            $query = "SELECT * FROM SESSIONE, FORMAZIONE, PRESENTAZIONE WHERE SESSIONE.Codice=CodiceSessione AND PRESENTAZIONE.Codice=CodicePresentazione AND CodiceSessione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codiceSessione);
             $stmt->execute();
             $result = $stmt->get_result();
     
