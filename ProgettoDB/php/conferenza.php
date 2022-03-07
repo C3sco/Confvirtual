@@ -2,6 +2,10 @@
     require_once('connection.php');
 
     $nomeConf = $_GET["nome"];
+
+    if($dbh->getAmministratore($_SESSION["username"]) != NULL)  
+        $templateParams["amministratore"] = $dbh->getAmministratore($_SESSION["username"]);
+
     //per avere identificativi della conferenza selezionata
     $templateParams["conferenza"] = $dbh->getConferenzaByNome($_GET["nome"]);
 
