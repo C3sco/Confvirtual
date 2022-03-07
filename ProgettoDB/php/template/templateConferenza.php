@@ -39,9 +39,18 @@
         <h3>Orario di inizio: <?php echo $presentazione["Inizio"]?></h3>
         <h3>Orario di fine: <?php echo $presentazione["Fine"]?></h3>
         <h3>Numero di sequenza nella sessione: <?php echo $presentazione["NumeroSequenza"]?></h3>
-        <h3><?php echo "------------------------"?></h3>
+        
+        <form method="post" action="./valutazione.php?presentazione=<?php echo $presentazione["Codice"]?>&nome=<?php echo $nomeConf?>">
+      
+            <input type="text" id="voto" placeholder="Voto" name="voto">
+            <input type="text" id="note" placeholder="Note" name="note">
+
+            <button type="submit" name="btnVoto">Valuta Presentazione</button>
+        </form>
+
+        <h3>------------------------</h3>
       <?php endforeach; ?>
-      <h3><?php echo "----------------------------------------------------------------"?></h3>
+      <h3>----------------------------------------------------------------</h3>
       <br/>
     <?php endforeach; ?>
 

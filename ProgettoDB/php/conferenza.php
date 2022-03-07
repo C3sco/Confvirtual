@@ -1,6 +1,7 @@
 <?php
     require_once('connection.php');
 
+    $nomeConf = $_GET["nome"];
     //per avere identificativi della conferenza selezionata
     $templateParams["conferenza"] = $dbh->getConferenzaByNome($_GET["nome"]);
 
