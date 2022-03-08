@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
-        <link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
         <link rel="stylesheet" href="../css/styleHome.css">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-<style>
-#grad1 {
-  height: 500px;
-  background-color: rgb(255, 255, 255); /* For browsers that do not support gradients */
-  /*background-image: linear-gradient(180deg, rgb(199, 199, 199), rgb(90, 90, 90));*/
-}
-</style>
+        <!-- Bootstrap core CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  
+  <!-- icone-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
     <ul>
         <li><a href="../php/logout.php">Logout</a></li>
-
-      </ul>
+    </ul>
 
 <div class="parallax">
   
@@ -33,8 +32,7 @@
   <?php elseif(isset($templateParams["amministratore"])): ?>
     <h1>Operazioni Disponibili Amministratore:</h1>
       <h3>
-        <a class="mb-3" href="./archivio-modifica-art.php" style="color: black; text-decoration: none;" >• Creazione Nuova Conferenza</a>
-        <a class="mb-3" href="./archivio-inserimentoArt.php"  style="color: black; text-decoration: none;" >&emsp;• Creazione Nuova Sessione</a>
+        <a class="mb-3" href="./creaConferenza.php" style="color: black; text-decoration: none;" >• Creazione Nuova Conferenza / Sessione</a>
         <a class="mb-3" href="./archivio-admin-ordini.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a>
         <a class="mb-3" href="./archivio-Ordini.php" style="color: black; text-decoration: none;" >&emsp;• Associazione Speaker-Presentazione Tutorial</a>
         <a class="mb-3" href="./archivio-Ordini.php" style="color: black; text-decoration: none;" >&emsp;• Associazione Presenter-Presentazione Articolo</a>
@@ -49,10 +47,10 @@
       <h3>
         <a class="mb-3" href="./DatiPresenter.php" style="color: black; text-decoration: none;" >• Inserimento Dati Personali</a>
         <a class="mb-3" href="./archivio-inserimentoArt.php"  style="color: black; text-decoration: none;" >&emsp;• Modifica Dati Personali</a>
-
       </h3>
   <?php endif?>
-          
+      
+        <br>
     <h1>Conferenze disponibili</h1>
     <?php foreach($templateParams['conferenze'] as $conferenza): ?>
       <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>"><?php echo $conferenza["Nome"]?></a>

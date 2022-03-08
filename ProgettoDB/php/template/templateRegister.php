@@ -11,12 +11,7 @@
 
     </head>
     <body>
-        <ul>
-            <li style="float:right"><a href="../html/paginaIniziale.html"><i class="fa fa-home"></i></a></li>
-            <li><a href="../html/Login.html">Login</a></li>
-            <li><a class="active" href="../html/register.html">Registrazione</a></li>
-          </ul>
-        
+
         <form method="post" action="../php/register.php">
             <h1>Registrazione</h1>
             <input type="text" id="username" placeholder="Username" name="username" maxlength="50" required>

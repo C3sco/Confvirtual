@@ -11,11 +11,6 @@
         <link rel="stylesheet" href="../css/styleHome.css">
     </head>
     <body>
-        <ul>
-            <li style="float:right"><a href="../html/paginaIniziale.html"><i class="fa fa-home"></i></a></li>
-            <li><a class="active" href="../html/Login.html">Login Utente</a></li>
-            <li><a href="../html/register.html">Registrazione</a></li>
-          </ul>
 
         <form method="post" action="../php/login.php">
             <h1>Login</h1>

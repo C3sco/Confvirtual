@@ -1,7 +1,6 @@
 <?php
     require_once 'connection.php';
 
-
         $username = $_SESSION["username"];
         $voto = $_POST["voto"];
         $note = $_POST["note"];
