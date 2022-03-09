@@ -35,8 +35,8 @@
         <a class="mb-3" href="./creaConferenza.php" style="color: black; text-decoration: none;" >• Creazione Nuova Conferenza / Sessione</a>
         <a class="mb-3" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a>
         <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Utenti-Presentazioni</a>
-        <a class="mb-3" href="./archivio-Ordini.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a>
-        <a class="mb-3" href="./archivio-Ordini.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento Sponsor</a>
+        <a class="mb-3" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a>
+        <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Sponsor</a>
         <br>
       </h3>
 
@@ -55,7 +55,7 @@
       <h3>Acronimo: <?php echo $conferenza["Acronimo"]?></h3>
       <h3>Logo: <?php echo $conferenza["Logo"]?></h3>
       <h3>Giornate di svolgimento:</h3>
-      <?php foreach($dbh->getDateConferenza($conferenza["Nome"]) as $data): ?>
+      <?php foreach($dbh->getDateConferenza($conferenza["Acronimo"]) as $data): ?>
         <h3><?php echo $data["Giorno"]?></h3>
       <?php endforeach; ?>
       <br/>

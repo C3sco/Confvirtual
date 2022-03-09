@@ -121,10 +121,10 @@ CREATE TABLE ISCRIZIONE(
 
 CREATE TABLE SPEAKER(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
-	Curriculum VARCHAR(30),
-    Foto VARCHAR(100),
-    NomeUni VARCHAR(100),
-	NomeDipartimento VARCHAR(100),
+	Curriculum VARCHAR(30) DEFAULT NULL,
+    Foto VARCHAR(100) DEFAULT NULL,
+    NomeUni VARCHAR(100) DEFAULT NULL,
+	NomeDipartimento VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
@@ -148,10 +148,10 @@ CREATE TABLE RISORSA(
 
 CREATE TABLE PRESENTER(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
-	Curriculum VARCHAR(30),
-    Foto VARCHAR(100),
-    NomeUni VARCHAR(100),
-	NomeDipartimento VARCHAR(100),
+	Curriculum VARCHAR(30) DEFAULT NULL,
+    Foto VARCHAR(100) DEFAULT NULL,
+    NomeUni VARCHAR(100) DEFAULT NULL,
+	NomeDipartimento VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
     #Un presenter deve essere necessariamente uno degli autori dell’articolo
 ) ENGINE=INNODB;

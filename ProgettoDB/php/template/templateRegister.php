@@ -21,9 +21,13 @@
             <input type="text" id="datanascita" placeholder="Data Nascita" name="datanascita" required>
             <input type="text" id="luogonascita" placeholder="Luogo Nascita" name="luogonascita" required>
             
-            <! –checkbox accessoria (non di dominio) per i termini d'uso–> 
-            <input type="checkbox" id="termini" name="termini" value="Accept"> 
-            <label for="termini"> Accetto i termini di utilizzo </label> 
+            <label for="">Tipologia Utente:</label>
+            <select class="form-select" name="tipo" >
+                <option value="Utente Generico">Utente Generico</option>
+                <option value="Speaker">Speaker</option>
+                <option value="Presenter">Presenter</option>
+                <option value="Amministratore">Amministratore</option>
+            </select>
             <br>
             
             <button type="submit" name="register">Registrati</button>

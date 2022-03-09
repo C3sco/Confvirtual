@@ -13,9 +13,19 @@
             $cognome = $_POST['cognome'];
             $datanascita = $_POST["datanascita"];
             $luogonascita = $_POST["luogonascita"];
-        
+            $tipo = $_POST["tipo"];
+
             $dbh->insertUser($username, $password, $nome, $cognome, $datanascita, $luogonascita); 
         
+            if($_POST["tipo"] == "Amministratore")
+                $dbh->insertAmministratore($username);
+
+            if($_POST["tipo"] == "Speaker")
+                $dbh->insertSpeaker($username);
+
+            if($_POST["tipo"] == "Presenter")
+                $dbh->insertPresenter($username);
+
             if($dbh->getUtente($username) != NULL){
                 header("location: ./login.php");                           
             }

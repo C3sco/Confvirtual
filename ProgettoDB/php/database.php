@@ -299,10 +299,10 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        public function getDateConferenza($nomeConf){
-            $query = "SELECT Giorno FROM conferenze_disponibili WHERE Nome=?";
+        public function getDateConferenza($conf){
+            $query = "SELECT Giorno FROM GIORNATA WHERE AcronimoConferenza=?";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('s',$nomeConf);
+            $stmt->bind_param('s',$conf);
             $stmt->execute();
             $result = $stmt->get_result();
     
@@ -376,6 +376,89 @@
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('isssssis', $codice, $titolo, $inizio, $fine, $link, $giornata, $annoEdizioneConferenza, $acronimoConferenza);
             $stmt->execute();
+        }
+
+        public function insertSponsor($nome, $logo, $importo){
+            $query= "INSERT INTO SPONSOR (Nome, Logo, Importo) VALUES (?,?,?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('ssi', $nome, $logo, $importo);
+            $stmt->execute();
+        }
+
+        public function insertDisposizione($anno, $acronimo, $nomeSp){
+            $query= "INSERT INTO DISPOSIZIONE (AnnoEdizioneConferenza, AcronimoConferenza, NomeSponsor) VALUES (?,?,?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('iss', $anno, $acronimo, $nomeSp);
+            $stmt->execute();
+        }
+
+        public function getSponsor(){
+            $query = "SELECT * FROM SPONSOR";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getPresentazioniValutate(){
+            $query = "SELECT DISTINCT(CodicePresentazione) FROM VALUTAZIONE";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getValutazioniByPresentazione($presentazione){
+            $query = "SELECT * FROM VALUTAZIONE WHERE CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$presentazione);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function insertAmministratore($username){
+            $query= "INSERT INTO AMMINISTRATORE (UsernameUtente) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+        }
+
+        public function insertSpeaker($username){
+            $query= "INSERT INTO SPEAKER (UsernameUtente) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+        }
+
+        public function insertPresenter($username){
+            $query= "INSERT INTO PRESENTER (UsernameUtente) VALUES (?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s', $username);
+            $stmt->execute();
+        }
+
+        public function getTutorialByCodice($codicePres){
+            $query = "SELECT * FROM TUTORIAL WHERE CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codicePres);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getArticoloByCodice($codicePres){
+            $query = "SELECT * FROM ARTICOLO WHERE CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codicePres);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
         }
 
     }
