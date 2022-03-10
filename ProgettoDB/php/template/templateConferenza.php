@@ -15,9 +15,13 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 </head>
+
 <body>
     <ul>
+      <li style="float:right"><a href="../php/home.php"><i class="fa fa-home"></i></a></li>
         <li><a href="../php/logout.php">Logout</a></li>
+        <li><a href="../php/paginaUtente.php">Back</a></li>
+      
 
     </ul>
 

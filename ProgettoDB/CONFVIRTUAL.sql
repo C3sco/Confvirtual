@@ -6,7 +6,7 @@ CREATE TABLE CONFERENZA(
 	AnnoEdizione INT DEFAULT 2000,
     Acronimo VARCHAR(20),
     Nome VARCHAR(100),
-    Logo VARCHAR(100),
+    Logo VARBINARY(MAX),
     Svolgimento ENUM("Attiva", "Completata") DEFAULT "Attiva",
     TotaleSponsorizzazioni INT DEFAULT 0,
     PRIMARY KEY(AnnoEdizione,Acronimo)
@@ -202,10 +202,11 @@ CREATE TABLE LISTA(
 ) ENGINE=INNODB;
 
 
-
-
+/*INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
+	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", (SELECT BulkColumn FROM OPENROWSET(BULK N'C:\xampp\htdocs\Progetto\ImgDB\icsi.PNG', Single_Blob) as Logo, "Attiva", 2);
+*/
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
-	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "x", "Attiva", 2);
+	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "../ImgDB/icsi.PNG", "Attiva", 2);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
 	VALUES (2022, "FRUCT", "IEEE FRUCT Conference", "x", "Completata", 1);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
@@ -363,8 +364,6 @@ INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2021, "CogSIMA", "Mari");
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2022, "WIT", "Mari");
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2022, "SPNLP", "Mari");
-
-
 
 
 
