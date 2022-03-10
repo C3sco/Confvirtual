@@ -10,8 +10,6 @@
             }        
         }
 
-        /* Statistiche (visibili da tutti gli utenti nella pagina iniziale) */    
-
         public function getNumConferenze(){
             $query = "SELECT COUNT(*) as NumConf FROM CONFERENZA";
             $stmt = $this->db->prepare($query);
@@ -165,7 +163,7 @@
         }  
         
         public function insertIscrizioneConf($anno, $acronimo, $username){
-            $query= "INSERT INTO ISCRIZIONE (AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (?,?,?)";
+            $query= "CALL REGISTRAZIONE_CONFERENZA(?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('iss', $anno, $acronimo, $username);
             $stmt->execute();
