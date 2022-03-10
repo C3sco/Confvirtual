@@ -368,16 +368,18 @@ INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente
 
 /*Operazioni che riguardano tutti gli utenti*/
 
-
 DELIMITER $
 CREATE PROCEDURE REGISTRAZIONE_CONFERENZA(IN AnnoEdizioneConferenzaI INT, IN AcronimoConferenzaI VARCHAR(20), IN UsernameUtenteI VARCHAR(100))
 BEGIN
-	DECLARE AnnoEdizioneConferenzaX INT DEFAULT YEAR(NOW());
+	DECLARE AnnoEdizioneConferenzaX INT;
+    DECLARE AcronimoConferenzaX INT;
     DECLARE UsernameUtenteX VARCHAR(100);
-	SET AnnoEdizioneConferenzaX =(SELECT AnnoEdizione FROM CONFERENZA WHERE( AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI
-		AND Svolgimento =! "Completato"));
-    SET UsernameUtenteX =(SELECT Username FROM UTENTE WHERE(Username=UsernameUtenteI));
-	IF(AnnoEdizioneX=1 AND UsernameUtenteX=1) THEN
+	SET AnnoEdizioneConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI
+		AND Svolgimento <> "Completato"));
+	SET AcronimoConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI
+		AND Svolgimento <> "Completato"));
+    SET UsernameUtenteX =(SELECT COUNT(*) FROM UTENTE WHERE(Username=UsernameUtenteI));
+	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND UsernameUtenteX=1) THEN
 		INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
     END IF;
 END $

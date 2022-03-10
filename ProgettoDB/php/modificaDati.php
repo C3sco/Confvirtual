@@ -3,6 +3,7 @@
 
     if($dbh->getPresenter($_SESSION["username"]) != NULL) {
 
+        //inserimento di TUTTI i dati del presenter
         if (isset($_POST['btnInserisciDati'])) {
             
             $username = $_SESSION["username"];
@@ -15,6 +16,7 @@
                 
         }
 
+        //modifica dati A SCELTA del presenter 
         if (isset($_POST['btnModificaDati'])) {
             
             $username = $_SESSION["username"];
@@ -43,6 +45,7 @@
 
     elseif($dbh->getSpeaker($_SESSION["username"]) != NULL) {
         
+        //inserimento di TUTTI i dati dello speaker
         if (isset($_POST['btnInserisciDati'])) {
             
             $username = $_SESSION["username"];
@@ -55,6 +58,7 @@
                 
         }
 
+        //modifica dati A SCELTA dello speaker 
         if (isset($_POST['btnModificaDati'])) {
             
             $username = $_SESSION["username"];

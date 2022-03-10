@@ -8,8 +8,9 @@
     $acronimo = $templateParams["conferenza"][0]["Acronimo"];
     $username = $_SESSION["username"];
 
-    //per iscriversi ad una conferenza
+    //iscrizione ad una conferenza
     $dbh->insertIscrizione($annoEdizione, $acronimo, $username);
+    $templateParams["msg"] = "Registrazione alla Conferenza avventura con successo!";
 
     require 'conferenza.php';
 ?>

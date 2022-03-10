@@ -5,10 +5,10 @@
     $templateParams["giornate"] = null;
     $templateParams["conferenza"] = null;
 
-    //per creare una nuova conferenza
+    //creare una nuova conferenza
     if (isset($_POST['btnCreaConferenza'])) {
         if(empty($_POST['anno']) || empty($_POST['acronimo']) || empty($_POST['nome']) || empty($_POST['logo'])){
-            $templateParams["errore"] = "Errore! Non sono stati inseriti alcuni dati";
+            $templateParams["erroreConferenza"] = "Errore! Non sono stati inseriti alcuni dati";
         } else {
             $username = $_SESSION["username"];
 
@@ -19,14 +19,16 @@
         
             $dbh -> insertConferenza($anno, $acronimo, $nome, $logo);
             $dbh -> insertCreazioneConf($anno, $acronimo, $username);
-            $dbh -> insertIscrizioneConf($anno, $acronimo, $username);
+            $dbh -> insertIscrizione($anno, $acronimo, $username);
+
             $templateParams['conferenze'] = $dbh->getConferenze();
+            $templateParams["msgConferenza"] = "Conferenza creata con successo!";
         }     
     }
-    //per aggiungere le giornate di una conferenza
+    //aggiungere le giornate ad una conferenza
     if (isset($_POST['btnAggiungiData'])) {
         if(empty($_POST['data']) || empty($_POST['conferenza'])){
-            $templateParams["errore"] = "Errore! Non sono stati inseriti alcuni dati";
+            $templateParams["erroreDataConferenza"] = "Errore! Non sono stati inseriti alcuni dati";
         } else {
             $templateParams["conferenza"] = $dbh->getConferenzaByNome($_POST['conferenza']);
 
@@ -35,18 +37,20 @@
             $anno =  $templateParams["conferenza"][0]["AnnoEdizione"];
                     
             $dbh->insertDataConferenza($acronimo, $anno, $data);
+            $templateParams["msgDataConferenza"] = "Conferenza creata con successo!";
+
         }     
     }
 
-    //per selezionare a quale conferenza aggiungere la nuova sessione e in che giornata
+    //selezionare a quale conferenza aggiungere la nuova sessione e in che giornata
     if (isset($_POST['btnSelezionaConferenza'])) {
         $templateParams["conferenza"] = $dbh->getConferenzaByNome($_POST['conferenza']);
         $templateParams["giornate"] = $dbh->getGiornate($templateParams["conferenza"][0]["Acronimo"]);
     }
-    //per aggiungere la sessione
+    //aggiungere la sessione
     if (isset($_POST['btnCreaSessione'])) {
         if(empty($_POST['giornate']) || empty($_POST['codice']) || empty($_POST['titolo']) || empty($_POST['inizio']) || empty($_POST['fine']) || empty($_POST['link'])){
-            $templateParams["errore"] = "Errore! Non sono stati inseriti alcuni dati";
+            $templateParams["erroreSessione"] = "Errore! Non sono stati inseriti alcuni dati";
         } else {
             $templateParams["conferenza2"] = $dbh->getConferenzaByNome($_POST['conferenza2']);
 
@@ -60,6 +64,8 @@
             $link = $_POST['link'];
         
             $dbh -> insertSessione($codice, $titolo, $inizio, $fine, $link, $giornata, $anno, $acronimo);
+            $templateParams["msgSessione"] = "Conferenza creata con successo!";
+
         }        
     }
     require 'template/templateCreaConferenza.php';

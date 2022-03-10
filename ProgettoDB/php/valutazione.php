@@ -1,15 +1,19 @@
 <?php
     require_once 'connection.php';
 
-        $username = $_SESSION["username"];
-        $voto = $_POST["voto"];
-        $note = $_POST["note"];
-        $presentazione = $_GET["presentazione"];
+        $codiceSessione = $_GET["codiceSessione"];
 
-        $dbh->insertValutazione($presentazione, $username, $voto, $note);
+        if(empty($_POST['voto']) || empty($_POST['note'])){
+            $templateParams["msgErrVal"] = "Errore! Non sono stati inseriti alcuni dati";
+        } else {
+            $username = $_SESSION["username"];
+            $voto = $_POST["voto"];
+            $note = $_POST["note"];
+            $presentazione = $_GET["presentazione"];
 
-        $nomeConf = $_GET["nome"];
-
+            $dbh->insertValutazione($presentazione, $username, $voto, $note);
+            $templateParams["msgValutazione"] = "Valutazione inserita con successo!";
+        }
     
-        header("location: conferenza.php?nome=$nomeConf");
+        header("location: presentazioni.php?codiceSessione=$codiceSessione");
 ?>

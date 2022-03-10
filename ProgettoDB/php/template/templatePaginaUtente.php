@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
-        <link rel="stylesheet" href="../css/styleHome.css">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap">
+    <link rel="stylesheet" href="../css/styleHome.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-        <!-- Bootstrap core CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  
-  <!-- icone-->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- icone-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
     <ul>
         <li><a href="../php/logout.php">Logout</a></li>
     </ul>
 
-<div class="parallax">
+<div class="row">
+
+        <div class="col-md-1"></div>  
+        <div class="col-md-10">
   
   <?php if(isset($templateParams["speaker"])): ?>
     <h1 style="margin: 30px;">Operazioni Disponibili Speaker:</h1>
       <h3>
         <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Dati Personali</a> <br>
         <a class="mb-3" href="./archivio-admin-ordini.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Risorse Aggiuntive</a><br>
+        <br>
+        <hr>
         <br>
       </h3>
 
@@ -37,7 +41,9 @@
         <a class="mb-3" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a><br>
         <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Utenti-Presentazioni</a><br>
         <a class="mb-3" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a><br>
-        <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Sponsor</a><br>
+        <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione e Associazione Sponsor</a><br>
+        <br>
+        <hr>
         <br>
       </h3>
 
@@ -46,10 +52,21 @@
       <h3>
         <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Dati Personali</a><br>
         <br>
+        <hr>
+        <br>
       </h3>
   <?php endif?>
-    <hr>  
+
+    </div>
+  </div>
+
+    <div class="row">
+
+        <div class="col-md-1"></div>  
+        <div class="col-md-10">
     <h1 style="margin: 30px;"> Conferenze disponibili</h1>
+    </div>
+    </div>
     <div class="container">
     <div class="row">
     <?php foreach($templateParams['conferenze'] as $conferenza): ?>
@@ -66,6 +83,7 @@
               <?php endforeach; ?>
               <p class="card-text">Numero di Sponsor: <?php echo $conferenza["TotaleSponsorizzazioni"]?></p>
               <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>" class="btn btn-primary">Dettagli</a>
+              <a href="registrazioneConf.php?nome=<?php echo $nomeConf?>" class="btn btn-outline-danger">Registrati alla conferenza</a>
             </div>
           </div>
         </div>

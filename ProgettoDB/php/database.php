@@ -161,13 +161,6 @@
             $stmt->bind_param('iss', $anno, $acronimo, $username);
             $stmt->execute();
         }  
-        
-        public function insertIscrizioneConf($anno, $acronimo, $username){
-            $query= "CALL REGISTRAZIONE_CONFERENZA(?,?,?)";
-            $stmt = $this->db->prepare($query);
-            $stmt->bind_param('iss', $anno, $acronimo, $username);
-            $stmt->execute();
-        }  
 
         public function insertDataConferenza($acronimo, $anno, $data){
             $query= "INSERT INTO GIORNATA (AnnoEdizioneConferenza, AcronimoConferenza, Giorno) VALUES (?,?,?)";
@@ -308,9 +301,9 @@
         }
 
         public function insertIscrizione($annoEdizioneConferenza, $acronimoConferenza, $usernameUtente){
-            $query= "INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (?,?,?)";
+            $query= "CALL REGISTRAZIONE_CONFERENZA(?,?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('sss', $annoEdizioneConferenza, $acronimoConferenza, $usernameUtente);
+            $stmt->bind_param('iss', $annoEdizioneConferenza, $acronimoConferenza, $usernameUtente);
             $stmt->execute();
         }
 
@@ -318,6 +311,16 @@
             $query = "SELECT * FROM SESSIONE WHERE AcronimoConferenza=?";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s',$acronimoConf);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getSessionebyCodice($codiceSess){
+            $query = "SELECT * FROM SESSIONE WHERE Codice=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codiceSess);
             $stmt->execute();
             $result = $stmt->get_result();
     
