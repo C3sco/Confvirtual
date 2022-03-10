@@ -17,50 +17,64 @@
 </head>
 <body>
     <ul>
-        <li style="float:right"><a href="../php/home.php"><i class="fa fa-home"></i></a></li>
         <li><a href="../php/logout.php">Logout</a></li>
     </ul>
 
 <div class="parallax">
   
   <?php if(isset($templateParams["speaker"])): ?>
-    <h1>Operazioni Disponibili Speaker:</h1>
+    <h1 style="margin: 30px;">Operazioni Disponibili Speaker:</h1>
       <h3>
-        <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >• Inserimento e Modifica Dati Personali</a>
-        <a class="mb-3" href="./archivio-admin-ordini.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Risorse Aggiuntive</a>
+        <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Dati Personali</a> <br>
+        <a class="mb-3" href="./archivio-admin-ordini.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Risorse Aggiuntive</a><br>
+        <br>
       </h3>
 
   <?php elseif(isset($templateParams["amministratore"])): ?>
-    <h1>Operazioni Disponibili Amministratore:</h1>
+    <h1 style="margin: 30px;">Operazioni Disponibili Amministratore:</h1>
       <h3>
-        <a class="mb-3" href="./creaConferenza.php" style="color: black; text-decoration: none;" >• Creazione Nuova Conferenza / Sessione</a>
-        <a class="mb-3" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a>
-        <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Utenti-Presentazioni</a>
-        <a class="mb-3" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a>
-        <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Sponsor</a>
+        <a class="mb-3" href="./creaConferenza.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Nuova Conferenza / Sessione</a><br>
+        <a class="mb-3" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a><br>
+        <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Utenti-Presentazioni</a><br>
+        <a class="mb-3" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a><br>
+        <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Sponsor</a><br>
         <br>
       </h3>
 
   <?php elseif(isset($templateParams["presenter"])): ?>
-    <h1>Operazioni Disponibili Presenter:</h1>
+    <h1 style="margin: 30px;">Operazioni Disponibili Presenter:</h1>
       <h3>
-        <a class="mb-3" href="./DatiPresenter.php" style="color: black; text-decoration: none;" >• Inserimento Dati Personali</a>
-        <a class="mb-3" href="./archivio-inserimentoArt.php"  style="color: black; text-decoration: none;" >&emsp;• Modifica Dati Personali</a>
+        <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Dati Personali</a><br>
+        <br>
       </h3>
   <?php endif?>
-      
-        <br>
-    <h1>Conferenze disponibili</h1>
+    <hr>  
+    <h1 style="margin: 30px;"> Conferenze disponibili</h1>
+    <div class="container">
+    <div class="row">
     <?php foreach($templateParams['conferenze'] as $conferenza): ?>
-      <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>"><?php echo $conferenza["Nome"]?></a>
-      <h3>Acronimo: <?php echo $conferenza["Acronimo"]?></h3>
-      <h3>Logo: <?php echo $conferenza["Logo"]?></h3>
-      <h3>Giornate di svolgimento:</h3>
-      <?php foreach($dbh->getDateConferenza($conferenza["Acronimo"]) as $data): ?>
-        <h3><?php echo $data["Giorno"]?></h3>
-      <?php endforeach; ?>
-      <br/>
+      
+        <div class="col-4">
+          <div class="card" style="width: 25rem; margin: 10px;">
+            <img src="../ImgDB/<?php echo $conferenza["Logo"]?>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><?php echo $conferenza["Nome"]?></h5>
+              <p class="card-text">Acronimo: <?php echo $conferenza["Acronimo"]?></p>
+              <p class="card-text">Giornate di svolgimento:</p>
+              <?php foreach($dbh->getDateConferenza($conferenza["Acronimo"]) as $data): ?>
+                <p class="card-text"><?php echo $data["Giorno"]?></p>
+              <?php endforeach; ?>
+              <p class="card-text">Numero di Sponsor: <?php echo $conferenza["TotaleSponsorizzazioni"]?></p>
+              <a href="conferenza.php?nome=<?php echo $conferenza["Nome"]?>" class="btn btn-primary">Dettagli</a>
+            </div>
+          </div>
+        </div>
+      
     <?php endforeach; ?>
+    </div>
+
+    </div>
+      
 </div>
 
 </body>

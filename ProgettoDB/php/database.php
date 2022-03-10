@@ -277,7 +277,7 @@
         }
 
         public function getConferenze(){
-            $query = "SELECT DISTINCT Nome, Acronimo, AnnoEdizione, Logo FROM CONFERENZA WHERE Svolgimento=?";
+            $query = "SELECT DISTINCT Nome, Acronimo, AnnoEdizione, Logo, TotaleSponsorizzazioni FROM CONFERENZA WHERE Svolgimento=?";
             $stmt = $this->db->prepare($query);
             $attiva = "Attiva";
             $stmt->bind_param('s',$attiva);

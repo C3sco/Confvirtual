@@ -6,7 +6,7 @@ CREATE TABLE CONFERENZA(
 	AnnoEdizione INT DEFAULT 2000,
     Acronimo VARCHAR(20),
     Nome VARCHAR(100),
-    Logo VARBINARY(MAX),
+    Logo VARCHAR(100),
     Svolgimento ENUM("Attiva", "Completata") DEFAULT "Attiva",
     TotaleSponsorizzazioni INT DEFAULT 0,
     PRIMARY KEY(AnnoEdizione,Acronimo)
@@ -202,11 +202,10 @@ CREATE TABLE LISTA(
 ) ENGINE=INNODB;
 
 
-/*INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
-	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", (SELECT BulkColumn FROM OPENROWSET(BULK N'C:\xampp\htdocs\Progetto\ImgDB\icsi.PNG', Single_Blob) as Logo, "Attiva", 2);
-*/
+
+
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
-	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "../ImgDB/icsi.PNG", "Attiva", 2);
+	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "x", "Attiva", 2);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
 	VALUES (2022, "FRUCT", "IEEE FRUCT Conference", "x", "Completata", 1);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
@@ -364,6 +363,26 @@ INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2021, "CogSIMA", "Mari");
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2022, "WIT", "Mari");
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2022, "SPNLP", "Mari");
+
+
+
+/*Operazioni che riguardano tutti gli utenti*/
+
+
+DELIMITER $
+CREATE PROCEDURE REGISTRAZIONE_CONFERENZA(IN AnnoEdizioneConferenzaI INT, IN AcronimoConferenzaI VARCHAR(20), IN UsernameUtenteI VARCHAR(100))
+BEGIN
+	DECLARE AnnoEdizioneConferenzaX INT DEFAULT YEAR(NOW());
+    DECLARE UsernameUtenteX VARCHAR(100);
+	SET AnnoEdizioneConferenzaX =(SELECT AnnoEdizione FROM CONFERENZA WHERE( AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI
+		AND Svolgimento =! "Completato"));
+    SET UsernameUtenteX =(SELECT Username FROM UTENTE WHERE(Username=UsernameUtenteI));
+	IF(AnnoEdizioneX=1 AND UsernameUtenteX=1) THEN
+		INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
+    END IF;
+END $
+DELIMITER ;
+
 
 
 

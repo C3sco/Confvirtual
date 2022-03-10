@@ -18,7 +18,6 @@
 
 <body>
     <ul>
-      <li style="float:right"><a href="../php/home.php"><i class="fa fa-home"></i></a></li>
         <li><a href="../php/logout.php">Logout</a></li>
         <li><a href="../php/paginaUtente.php">Back</a></li>
       

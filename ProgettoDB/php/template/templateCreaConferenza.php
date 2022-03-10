@@ -25,7 +25,7 @@
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <h1><br><br>Creazione Nuova Conferenza</h1><br>
+          <h1><br>Creazione Nuova Conferenza</h1><br>
           
           <h4 class="mb-3">
             <form action="./creaConferenza.php" method="post" class="row g-3">
@@ -57,13 +57,17 @@
                                 
               </div>
             </form>
-        </div>
+
+          </div>
+
+          <br><br>
+        <hr>  
 
         <div class="row">
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <h1><br><br>Aggiungi Giornata a Conferenza</h1><br>
+          <h1><br>Aggiungi Giornata a Conferenza</h1><br>
           
           <h4 class="mb-3">
             <form action="./creaConferenza.php" method="post" class="row g-3">
@@ -87,13 +91,18 @@
               </div>
                                 
               </div>
+
             </form>
-            
+            </div>
+
+            <br><br>
+            <hr>  
+
         <div class="row">
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
-          <h1><br><br>Creazione Nuova Sessione</h1><br>
+          <h1><br>Creazione Nuova Sessione</h1><br>
           <h4 class="mb-3">
             <form action="./creaConferenza.php" method="post" class="row g-3">
             <div class="col-md-6">
@@ -168,6 +177,7 @@
                                 
               </div>
             </form>
+            </div>
         </div>
     </body>
 </html>

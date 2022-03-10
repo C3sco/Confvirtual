@@ -32,7 +32,6 @@
         <div class="col-md-10">
           <h1><br><br>Inserimento Sponsor</h1><br>
           
-          <h4 class="mb-3">
             <form action="./creaSponsor.php" method="post" class="row g-3">
               <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Nome:</label>
@@ -48,8 +47,8 @@
                   <label for="formFile" class="form-label">Logo:</label>
                   <input class="form-control" type="file" id="logo" name="logo">
              </div>     
-
-              <div class="col-md-3">
+              <div class="col-md-6"></div> 
+              <div class="col-md-6">
                 <br>
                 <button type="submit" name="btnInserisciSponsor" class="btn btn-primary">Aggiungi</button>
               </div>
@@ -57,13 +56,15 @@
               </div>
             </form>
         </div>
+        <br><br>
+        <hr>
 
         <div class="row">
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
 
-          <h1><br><br>Associazione Conferenza - Sponsor</h1><br>
+          <h1><br>Associazione Conferenza - Sponsor</h1><br>
           
           <h4 class="mb-3">
             <form action="./creaSponsor.php" method="post" class="row g-3">
