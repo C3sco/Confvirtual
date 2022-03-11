@@ -24,10 +24,31 @@
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
+
+        <?php if (isset($templateParams['msgDati'])): ?>
+              <div class="alert alert-info" role="alert">
+                <div class="row">
+                  <div class="col-8 col-md-6">
+                    <h4><?php echo ($templateParams['msgDati'])?></h4>
+                  </div> 
+                </div>
+              </div>
+        <?php endif; ?>
+
+        <?php if (isset($templateParams['msgErroreDati'])): ?>
+                  <div class="alert alert-danger" role="alert">
+                    <div class="row">
+                      <div class="col-8 col-md-6">
+                        <h4><?php echo ($templateParams['msgErroreDati'])?></h4>
+                      </div> 
+                    </div>
+                  </div>
+        <?php endif; ?>
+
           <h1><br><br>Inserimento Dati</h1><br>
           
           <h4 class="mb-3">
-            <form action="./DatiPresenter.php" method="post" class="row g-3">
+            <form action="./modificaDati.php" method="post" class="row g-3">
               <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Nome Uni:</label>
                 <input type="text" class="form-control" id="nomeUni" name="nomeUni">
@@ -66,10 +87,21 @@
         
         <div class="col-md-1"></div>
         <div class="col-md-10">
+
+        <?php if (isset($templateParams['msgModDati'])): ?>
+              <div class="alert alert-info" role="alert">
+                <div class="row">
+                  <div class="col-8 col-md-6">
+                    <h4><?php echo ($templateParams['msgModDati'])?></h4>
+                  </div> 
+                </div>
+              </div>
+        <?php endif; ?>
+
           <h1><br>Modifica Dati</h1><br>
           
           <h4 class="mb-3">
-            <form action="./DatiPresenter.php" method="post" class="row g-3">
+            <form action="./modificaDati.php" method="post" class="row g-3">
               <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Nome Uni:</label>
                 <input type="text" class="form-control" id="nomeUni" name="nomeUni">

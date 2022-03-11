@@ -38,6 +38,7 @@
         <p class="card-text">Link alla stanza Teams: <?php echo $sessione["Link"]?></p>
         <p class="card-text">Numero Presentazioni: <?php echo $sessione["NumeroPresentazioni"]?></p>
         <a href="presentazioni.php?codiceSessione=<?php echo $sessione["Codice"]?>" class="btn btn-primary">Visualizza Presentazioni</a>
+        <a href="chat.php?codiceSessione=<?php echo $sessione["Codice"]?>" class="btn btn-primary">Chat</a>
     </div>
     </div>
     <?php endforeach; ?>

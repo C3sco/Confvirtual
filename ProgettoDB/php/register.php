@@ -8,7 +8,6 @@
     
             $username = $_POST['username'];
             $hash = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            //$password = $_POST['password'];
             $nome = $_POST['nome'];
             $cognome = $_POST['cognome'];
             $datanascita = $_POST["datanascita"];
