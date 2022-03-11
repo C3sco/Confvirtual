@@ -13,7 +13,7 @@
     <body>
         <ul>
             <li style="float:right"><a href="../php/home.php"><i class="fa fa-home"></i></a></li>
-            <li><a href="../php/login.php">Login Utente</a></li>
+            <li style="float:right"><a href="../php/login.php">Login</a></li>
         
           </ul>
 

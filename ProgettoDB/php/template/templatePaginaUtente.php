@@ -16,7 +16,7 @@
 
 <body>
     <ul>
-        <li><a href="../php/logout.php">Logout</a></li>
+          <li style="float:right"><a href="../php/logout.php">Logout</a></li>
     </ul>
 
 <div class="row">
@@ -28,7 +28,7 @@
     <h1 style="margin: 30px;">Operazioni Disponibili Speaker:</h1>
       <h3>
         <a class="mb-3" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Dati Personali</a> <br>
-        <a class="mb-3" href="./archivio-admin-ordini.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Risorse Aggiuntive</a><br>
+        <a class="mb-3" href="./creaRisorsa.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento e Modifica Risorse Aggiuntive</a><br>
         <br>
         <hr>
         <br>
@@ -39,7 +39,7 @@
       <h3>
         <a class="mb-3" href="./creaConferenza.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Nuova Conferenza / Sessione</a><br>
         <a class="mb-3" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a><br>
-        <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Utenti-Presentazioni</a><br>
+        <a class="mb-3" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Relatori-Presentazioni</a><br>
         <a class="mb-3" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a><br>
         <a class="mb-3" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione e Associazione Sponsor</a><br>
         <br>

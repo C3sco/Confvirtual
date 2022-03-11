@@ -10,10 +10,11 @@
         <link rel="stylesheet" href="../css/style.css">
         <link rel="stylesheet" href="../css/styleHome.css">
     </head>
+    
     <body>
         <ul>
             <li style="float:right"><a href="../php/home.php"><i class="fa fa-home"></i></a></li>
-            <li><a href="../php/register.php">Registrazione</a></li>
+            <li style="float:right"><a href="../php/register.php">Registrazione</a></li>
         
           </ul>
 

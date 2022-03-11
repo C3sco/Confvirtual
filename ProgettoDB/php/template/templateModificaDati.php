@@ -16,7 +16,8 @@
 
 <body>
     <ul>
-        <li><a href="../php/logout.php">Logout</a></li>
+    <li style="float:right"><a href="../php/paginaUtente.php"><i class="fa fa-home"></i></a></li>
+          <li style="float:right"><a href="../php/logout.php">Logout</a></li>
 
     </ul>
     <div class="row">

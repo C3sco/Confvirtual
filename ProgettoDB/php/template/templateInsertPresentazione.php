@@ -16,7 +16,8 @@
 
     <body>
         <ul>
-          <li><a href="../php/logout.php">Logout</a></li>
+        <li style="float:right"><a href="../php/paginaUtente.php"><i class="fa fa-home"></i></a></li>
+          <li style="float:right"><a href="../php/logout.php">Logout</a></li>
         </ul>
         <div class="row">
         
@@ -43,7 +44,7 @@
                   </div>
         <?php endif; ?>
 
-          <h1><br><br>Inserimento delle presentazioni in una sessione</h1><br>
+          <h1><br>Inserimento delle presentazioni in una sessione</h1><br>
           
           <h4 class="mb-3">
             <form action="./insertPresentazione.php" method="post" class="row g-3">

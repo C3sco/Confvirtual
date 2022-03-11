@@ -10,6 +10,8 @@
             }        
         }
 
+        //STATISTICHE PAGINA INIZIALE
+
         public function getNumConferenze(){
             $query = "SELECT COUNT(*) as NumConf FROM CONFERENZA";
             $stmt = $this->db->prepare($query);
@@ -38,6 +40,26 @@
 
             return $result->fetch_all(MYSQLI_ASSOC);
         } 
+
+        public function avgVotoPresenter(){
+            $query = "SELECT ARTICOLO.UsernameUtente, AVG(Voto) AS Media FROM VALUTAZIONE, ARTICOLO WHERE ARTICOLO.CodicePresentazione=VALUTAZIONE.CodicePresentazione GROUP BY ARTICOLO.UsernameUtente ORDER BY Media DESC";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } 
+
+        public function avgVotoSpeaker(){
+            $query = "SELECT DIMOSTRAZIONE.UsernameUtente, AVG(Voto) AS Media FROM VALUTAZIONE, DIMOSTRAZIONE WHERE DIMOSTRAZIONE.CodicePresentazione=VALUTAZIONE.CodicePresentazione GROUP BY DIMOSTRAZIONE.UsernameUtente ORDER BY Media DESC";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            return $result->fetch_all(MYSQLI_ASSOC);
+        } 
+
+        //OPERAZIONI UTENTI GENERICI
 
         public function getUtente($username){
             $query = "SELECT * FROM UTENTE WHERE Username = ?";
@@ -169,6 +191,8 @@
             $stmt->execute();
         }
 
+        //OPERAZIONI PRESENTER
+
         public function updateDatiPresenter($username, $curriculum, $foto, $nomeUni, $nomeDipartimento){
             $query ="UPDATE PRESENTER SET Curriculum=? , Foto=?, NomeUni=?, NomeDipartimento=? WHERE UsernameUtente=?";
             $stmt = $this->db->prepare($query);
@@ -219,6 +243,8 @@
             return $stmt->execute();
         }
 
+        //OPERAZIONI SPEAKER
+
         public function updateDatiSpeaker($username, $curriculum, $foto, $nomeUni, $nomeDipartimento){
             $query ="UPDATE SPEAKER SET Curriculum=? , Foto=?, NomeUni=?, NomeDipartimento=? WHERE UsernameUtente=?";
             $stmt = $this->db->prepare($query);
@@ -268,6 +294,35 @@
     
             return $stmt->execute();
         }
+
+        public function insertRisorsa($username, $tutorial, $link, $descrizione){
+            $query= "INSERT INTO RISORSA (UsernameUtente,CodicePresentazione,LinkRisorsa,DescrizioneRisorsa) VALUES (?,?,?,?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('siss', $username, $tutorial, $link, $descrizione);
+            $stmt->execute();
+        }
+
+        public function updateLinkRisorsa($username, $codice, $link){
+            $query ="UPDATE RISORSA SET LinkRisorsa=? WHERE UsernameUtente=? AND CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('ssi', $link, $username, $codice);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $stmt->execute();
+        }
+
+        public function updateDescrizioneRisorsa($username, $codice, $descrizione){
+            $query ="UPDATE RISORSA SET DescrizioneRisorsa=? WHERE UsernameUtente=? AND CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('ssi', $descrizione, $username, $codice);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $stmt->execute();
+        }
+
+        //VARIE
 
         public function getConferenze(){
             $query = "SELECT DISTINCT Nome, Acronimo, AnnoEdizione, Logo, TotaleSponsorizzazioni FROM CONFERENZA WHERE Svolgimento=?";
@@ -461,6 +516,27 @@
     
             return $result->fetch_all(MYSQLI_ASSOC);
         }
+
+        public function getTutorialBySpeaker($username){
+            $query = "SELECT * FROM TUTORIAL, DIMOSTRAZIONE WHERE TUTORIAL.CodicePresentazione=DIMOSTRAZIONE.CodicePresentazione AND UsernameUtente=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('s',$username);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        public function getSpeakerByTutorial($codice){
+            $query = "SELECT UsernameUtente FROM TUTORIAL, DIMOSTRAZIONE WHERE TUTORIAL.CodicePresentazione=DIMOSTRAZIONE.CodicePresentazione AND DIMOSTRAZIONE.CodicePresentazione=?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codice);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        
 
     }
 ?>

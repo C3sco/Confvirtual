@@ -16,7 +16,8 @@
 
 <body>
     <ul>
-        <li><a href="../php/logout.php">Logout</a></li>
+    <li style="float:right"><a href="../php/paginaUtente.php"><i class="fa fa-home"></i></a></li>
+          <li style="float:right"><a href="../php/logout.php">Logout</a></li>
     </ul>
 
     <div class="row">
@@ -71,12 +72,16 @@
             <p class="card-text">Orario di fine: <?php echo $presentazione["Fine"]?></p>
             <p class="card-text">Numero di sequenza nella sessione: <?php echo $presentazione["NumeroSequenza"]?></p>
             <p class="card-text">Abstract: <?php echo $tutorial["Abstract"]?></p>
-            <p class="card-text">Speaker:</p>
+            <?php foreach($dbh->getSpeakerByTutorial($tutorial["CodicePresentazione"]) as $speaker): ?>
+                <p class="card-text">Speaker: <?php echo $speaker["UsernameUtente"]?></p>
+            <?php endforeach; ?>
         <?php endforeach; ?>
       <?php endif; ?>
 
     
-        <?php if(isset($templateParams["amministratore"])): ?>
+        <?php if(isset($templateParams["amministratore"]) 
+            && ((($dbh->getArticoloByCodice($presentazione["Codice"])!=null) && $dbh->getArticoloByCodice($presentazione["Codice"])[0]["StatoSvolgimento"]=="Coperto") 
+            || $dbh->getTutorialByCodice($presentazione["Codice"])!=null)): ?>
 
             <form method="post" action="./valutazione.php?presentazione=<?php echo $presentazione["Codice"]?>&codiceSessione=<?php echo $codiceSessione?>">
 
