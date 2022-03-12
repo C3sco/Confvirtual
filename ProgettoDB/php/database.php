@@ -81,9 +81,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce nuovo utente per registrazione !!!!!!!!!!!
+        //inserisce nuovo utente per registrazione
         public function insertUser($username, $password, $nome, $cognome, $datanascita, $luogonascita){
-            $query= "INSERT INTO UTENTE(Username, Passwordd, Nome, Cognome, DataNascita, LuogoNascita) VALUES (?,?,?,?,?,?)";
+            $query= "CALL REGISTRAZIONE (?,?,?,?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('ssssss', $username, $password, $nome, $cognome, $datanascita, $luogonascita);
             $stmt->execute();
@@ -166,9 +166,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce presentazione nella lista presentazioni preferite dell'utente !!!!!!!!!!!!!!!
+        //inserisce presentazione nella lista presentazioni preferite dell'utente
         public function insertLista($username, $codicePres){
-            $query= "INSERT INTO LISTA (UsernameUtente, CodicePresentazione) VALUES (?,?)";
+            $query= "CALL INSERIMENTO_FAVORITA (?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('si', $username, $codicePres);
             $stmt->execute();
@@ -178,9 +178,9 @@
         //----------------------------------------------------------------------------------------
         //OPERAZIONI AMMINISTRATORE
 
-        //inserisce nuova conferenza !!!!!!!!!!!!!!!!
+        //inserisce nuova conferenza
         public function insertConferenza($anno, $acronimo, $nome, $logo){
-            $query= "INSERT INTO CONFERENZA (AnnoEdizione, Acronimo, Nome, Logo) VALUES (?,?,?,?)";
+            $query= "CALL CREAZIONE_CONFERENZA (?,?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('isss', $anno, $acronimo, $nome, $logo);
             $stmt->execute();
@@ -241,9 +241,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce presentazione nella sessione!!!!!!!!!!!!!!!!
+        //inserisce presentazione nella sessione
         public function insertFormazione($codiceSessione, $codicePresentazione){
-            $query= "INSERT INTO FORMAZIONE (CodiceSessione, CodicePresentazione) VALUES (?,?)";
+            $query= "CALL INSERIMENTO_PRESENTAZIONI (?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('ii', $codiceSessione, $codicePresentazione);
             $stmt->execute();
@@ -269,9 +269,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce come speaker del tutorial !!!!!!!!!!!!!!!!
+        //inserisce come speaker del tutorial
         public function insertDimostrazione($username, $codicePres){
-            $query= "INSERT INTO DIMOSTRAZIONE (UsernameUtente, CodicePresentazione) VALUES (?,?)";
+            $query= "CALL ASSOCIAZIONE_SPEAKER (?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('si', $username, $codicePres);
             $stmt->execute();
@@ -299,9 +299,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce come presenter dell'articolo !!!!!!!!!!!!!!!!
+        //inserisce come presenter dell'articolo
         public function updatePresenterArticolo($username, $codice){
-            $query ="UPDATE ARTICOLO SET UsernameUtente=? WHERE CodicePresentazione=?";
+            $query ="CALL ASSOCIAZIONE_PRESENTER (?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('si', $username, $codice);
             $stmt->execute();
@@ -333,7 +333,7 @@
 
         //inserisce una nuova valutazione
         public function insertValutazione($presentazione, $username, $voto, $note){
-            $query= "INSERT INTO VALUTAZIONE (CodicePresentazione, UsernameUtente, Voto, Note) VALUES (?,?,?,?)";
+            $query= "CALL INSERIMENTO_VALUTAZIONE (?,?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('isis', $presentazione, $username, $voto, $note);
             $stmt->execute();
@@ -359,7 +359,7 @@
 
         //inserisce relazione sponsorizzazione sposor-conferenza
         public function insertDisposizione($anno, $acronimo, $nomeSp){
-            $query= "INSERT INTO DISPOSIZIONE (AnnoEdizioneConferenza, AcronimoConferenza, NomeSponsor) VALUES (?,?,?)";
+            $query= "CALL INSERIMENTO_SPONSORINZZAZIONE (?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('iss', $anno, $acronimo, $nomeSp);
             $stmt->execute();
