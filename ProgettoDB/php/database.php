@@ -89,25 +89,25 @@
             $stmt->execute();
         }
 
-        //inserisce nuovo utente amministratore !!!!!!!!!!!
+        //inserisce nuovo utente amministratore
         public function insertAmministratore($username){
-            $query= "INSERT INTO AMMINISTRATORE (UsernameUtente) VALUES (?)";
+            $query= "CALL REGISTRAZIONE_AMMINISTRATORE (?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $username);
             $stmt->execute();
         }
 
-        //inserisce nuovo utente speaker !!!!!!!!!!!
+        //inserisce nuovo utente speaker
         public function insertSpeaker($username){
-            $query= "INSERT INTO SPEAKER (UsernameUtente) VALUES (?)";
+            $query= "CALL REGISTRAZIONE_SPEAKER (?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $username);
             $stmt->execute();
         }
 
-        //inserisce nuovo utente presenter !!!!!!!!!!!
+        //inserisce nuovo utente presenter
         public function insertPresenter($username){
-            $query= "INSERT INTO PRESENTER (UsernameUtente) VALUES (?)";
+            $query= "CALL REGISTRAZIONE_PRESENTER (?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('s', $username);
             $stmt->execute();
@@ -186,17 +186,17 @@
             $stmt->execute();
         }
 
-        //inserisce giorni di una conferenza !!!!!!!!!!!!!!!!
+        //inserisce giorni di una conferenza 
         public function insertDataConferenza($acronimo, $anno, $data){
-            $query= "INSERT INTO GIORNATA (AnnoEdizioneConferenza, AcronimoConferenza, Giorno) VALUES (?,?,?)";
+            $query= "CALL INSERIMENTO_GIORNO (?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('iss', $anno, $acronimo, $data);
             $stmt->execute();
         }
 
-        //inserisce relazione di creazione della conferenza !!!!!!!!!!!!!!!!
+        //inserisce relazione di creazione della conferenza
         public function insertCreazioneConf($anno, $acronimo, $username){
-            $query= "INSERT INTO CREAZIONE (AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (?,?,?)";
+            $query= "CALL INSERIMENTO_CREAZIONE (?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('iss', $anno, $acronimo, $username);
             $stmt->execute();
@@ -213,7 +213,7 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce nuova sessione NON FUNZIONA!!!!!!!!!!!!!!!!
+        //inserisce nuova sessione 
         public function insertSessione($codice, $titolo, $inizio, $fine, $link, $giornata, $annoEdizioneConferenza, $acronimoConferenza){
             $query= "CALL CREAZIONE_SESSIONE (?,?,?,?,?,?,?,?)";
             $stmt = $this->db->prepare($query);
@@ -339,9 +339,9 @@
             $stmt->execute();
         }
 
-        //inserisce nuovo sponsor !!!!!!!!!!!!!!!!!
+        //inserisce nuovo sponsor
         public function insertSponsor($nome, $logo, $importo){
-            $query= "INSERT INTO SPONSOR (Nome, Logo, Importo) VALUES (?,?,?)";
+            $query= "CALL CREAZIONE_SPONSOR (?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('ssi', $nome, $logo, $importo);
             $stmt->execute();
