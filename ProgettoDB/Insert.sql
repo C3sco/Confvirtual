@@ -24,12 +24,12 @@ INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (
 INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-27");
 INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-28");
 
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Mastercard", "x", 1000000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("PlayStation", "x", 500000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("FedEx", "x", 1500000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Adidas", "x", 275000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Nike", "x", 750000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Visa", "x", 1250000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Mastercard", "mastercard.webp", 1000000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("PlayStation", "playstation.jpeg", 500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("FedEx", "Fedex.png", 1500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Adidas", "adidas.jpeg", 275000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Nike", "nike.png", 750000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Visa", "visa.png", 1250000);
 
 INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "FedEx");
 INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "Adidas");

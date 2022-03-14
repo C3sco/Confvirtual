@@ -142,7 +142,7 @@
               <div class="alert alert-info" role="alert">
                 <div class="row">
                   <div class="col-8 col-md-6">
-                    <h4><?php echo ($templateParams['msmsgSessioneg'])?></h4>
+                    <h4><?php echo ($templateParams['msgSessione'])?></h4>
                   </div> 
                 </div>
               </div>

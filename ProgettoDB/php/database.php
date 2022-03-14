@@ -213,9 +213,9 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
-        //inserisce nuova sessione !!!!!!!!!!!!!!!!
+        //inserisce nuova sessione NON FUNZIONA!!!!!!!!!!!!!!!!
         public function insertSessione($codice, $titolo, $inizio, $fine, $link, $giornata, $annoEdizioneConferenza, $acronimoConferenza){
-            $query= "INSERT INTO SESSIONE (Codice, Titolo, Inizio, Fine, Link, GiornoGiornata, AnnoEdizioneConferenza, AcronimoConferenza) VALUES (?,?,?,?,?,?,?,?)";
+            $query= "CALL CREAZIONE_SESSIONE (?,?,?,?,?,?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('isssssis', $codice, $titolo, $inizio, $fine, $link, $giornata, $annoEdizioneConferenza, $acronimoConferenza);
             $stmt->execute();

@@ -45,7 +45,7 @@
     //selezionare a quale conferenza aggiungere la nuova sessione e in che giornata
     if (isset($_POST['btnSelezionaConferenza'])) {
         $templateParams["conferenza"] = $dbh->getConferenzaByNome($_POST['conferenza']);
-        $templateParams["giornate"] = $dbh->getGiornate($templateParams["conferenza"][0]["Acronimo"]);
+        $templateParams["giornate"] = $dbh->getDateConferenza($templateParams["conferenza"][0]["Acronimo"]);
     }
     //aggiungere la sessione
     if (isset($_POST['btnCreaSessione'])) {

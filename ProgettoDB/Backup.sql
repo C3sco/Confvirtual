@@ -230,12 +230,12 @@ INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (
 INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-27");
 INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza, Giorno) VALUES (2022, "SPNLP", "2022-05-28");
 
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Mastercard", "x", 1000000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("PlayStation", "x", 500000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("FedEx", "x", 1500000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Adidas", "x", 275000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Nike", "x", 750000);
-INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Visa", "x", 1250000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Mastercard", "mastercard.webp", 1000000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("PlayStation", "playstation.jpeg", 500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("FedEx", "Fedex.png", 1500000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Adidas", "adidas.jpeg", 275000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Nike", "nike.png", 750000);
+INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES ("Visa", "visa.png", 1250000);
 
 INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "FedEx");
 INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES (2022, "ICSI", "Adidas");
@@ -537,10 +537,10 @@ BEGIN
 	DECLARE GiornoGiornataX DATE;
     DECLARE AnnoEdizioneX INT;
     DECLARE AcronimoX VARCHAR(20);
-    SET GiornoGiornataX =(SELECT COUNT(*) FROM GIORNATA WHERE(Giorno=GiornoGiornataI AND AnnoEdizioneConferenza=AnnoEdizioneConferenzaI AND AcronimoConferenza=AcronimoConferenzaI));
     SET AnnoEdizioneX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	SET AcronimoX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
-    IF(GiornoGiornataX=1 AND AnnoEdizioneX=1 AND AcronimoX=1) THEN
+    SET GiornoGiornataX =(SELECT COUNT(*) FROM GIORNATA WHERE(Giorno=GiornoGiornataI AND AnnoEdizioneConferenza=AnnoEdizioneConferenzaI AND AcronimoConferenza=AcronimoConferenzaI));
+    IF(AnnoEdizioneX=1 AND AcronimoX=1 AND GiornoGiornataX=1) THEN
 		INSERT INTO SESSIONE(Codice,Titolo,Inizio,Fine,Link,GiornoGiornata,AnnoEdizioneConferenza,AcronimoConferenza) 
 		VALUES (CodiceI,TitoloI,InizioI,FineI,LinkI,GiornoGiornataI,AnnoEdizioneConferenzaI,AcronimoConferenzaI);
     END IF;
@@ -622,6 +622,10 @@ BEGIN
 	END IF;
 END $
 DELIMITER ;
+
+
+CALL CREAZIONE_SESSIONE(1, "x", "10:30:00", "11:00:00", "x", "2022-04-02" ,2022, "WIT");
+SELECT * FROM SESSIONE;
 
 CAll INSERIMENTO_SPONSOR(2022, "ICSI", "Nike");
 SELECT * FROM DISPOSIZIONE;
