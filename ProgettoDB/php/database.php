@@ -369,55 +369,55 @@
         //----------------------------------------------------------------------------------------
         //OPERAZIONI PRESENTER
 
-        //inserisce i dati di un presenter !!!!!!!!!!
+        //inserisce i dati di un presenter 
         public function updateDatiPresenter($username, $curriculum, $foto, $nomeUni, $nomeDipartimento){
-            $query ="UPDATE PRESENTER SET Curriculum=? , Foto=?, NomeUni=?, NomeDipartimento=? WHERE UsernameUtente=?";
+            $query ="CALL INSERIMENTO_DATI_PRESENTER (?,?,?,?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('sssss', $curriculum, $foto, $nomeUni, $nomeDipartimento, $username);
+            $stmt->bind_param('sssss', $username, $curriculum, $foto, $nomeUni, $nomeDipartimento);
             $stmt->execute();
             $result = $stmt->get_result();
         
             return $stmt->execute();
         }
         
-        //modifica curriculum presenter !!!!!!!!!!!
+        //modifica curriculum presenter
         public function updateCurriculumPresenter($username, $curriculum){
-            $query ="UPDATE PRESENTER SET Curriculum=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_CURRICULUM_PRESENTER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $curriculum, $username);
+            $stmt->bind_param('ss', $username, $curriculum);
             $stmt->execute();
             $result = $stmt->get_result();
 
             return $stmt->execute();
         }
 
-        //modifica nome uni presenter !!!!!!!!!!!
+        //modifica nome uni presenter 
         public function updateNomeUniPresenter($username, $nomeUni){
-            $query ="UPDATE PRESENTER SET NomeUni=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_NOME_UNI_PRESENTER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $nomeUni, $username);
+            $stmt->bind_param('ss', $username, $nomeUni);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //modifica nome dip presenter !!!!!!!!!!!
+        //modifica nome dip presenter 
         public function updateNomeDipartimentoPresenter($username, $nomeDipartimento){
-            $query ="UPDATE PRESENTER SET NomeDipartimento=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_NOME_DIPARTIMENTO_PRESENTER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $nomeDipartimento, $username);
+            $stmt->bind_param('ss', $username, $nomeDipartimento);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //modifica foto presenter !!!!!!!!!!!
+        //modifica foto presenter 
         public function updateFotoPresenter($username, $foto){
-            $query ="UPDATE PRESENTER SET Foto=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_FOTO_PRESENTER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $foto, $username);
+            $stmt->bind_param('ss', $username, $foto);
             $stmt->execute();
             $result = $stmt->get_result();
     
@@ -427,85 +427,85 @@
         //----------------------------------------------------------------------------------------
         //OPERAZIONI SPEAKER
 
-        //inserisce i dati di uno speaker !!!!!!!!!!
+        //inserisce i dati di uno speaker 
         public function updateDatiSpeaker($username, $curriculum, $foto, $nomeUni, $nomeDipartimento){
-            $query ="UPDATE SPEAKER SET Curriculum=? , Foto=?, NomeUni=?, NomeDipartimento=? WHERE UsernameUtente=?";
+            $query ="CALL INSERIMENTO_DATI_SPEAKER (?,?,?,?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('sssss', $curriculum, $foto, $nomeUni, $nomeDipartimento, $username);
+            $stmt->bind_param('sssss', $username, $curriculum, $foto, $nomeUni, $nomeDipartimento);
             $stmt->execute();
             $result = $stmt->get_result();
         
             return $stmt->execute();
         }
         
-        //modifica curriculum presenter !!!!!!!!!!!
+        //modifica curriculum presenter 
         public function updateCurriculumSpeaker($username, $curriculum){
-            $query ="UPDATE SPEAKER SET Curriculum=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_CURRICULUM_SPEAKER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $curriculum, $username);
+            $stmt->bind_param('ss', $username, $curriculum);
             $stmt->execute();
             $result = $stmt->get_result();
 
             return $stmt->execute();
         }
 
-        //modifica nome uni presenter !!!!!!!!!!!
+        //modifica nome uni presenter 
         public function updateNomeUniSpeaker($username, $nomeUni){
-            $query ="UPDATE SPEAKER SET NomeUni=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_NOME_UNI_SPEAKER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $nomeUni, $username);
+            $stmt->bind_param('ss', $username, $nomeUni);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //modifica nome dip presenter !!!!!!!!!!!
+        //modifica nome dip presenter 
         public function updateNomeDipartimentoSpeaker($username, $nomeDipartimento){
-            $query ="UPDATE SPEAKER SET NomeDipartimento=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_NOME_DIPARTIMENTO_SPEAKER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $nomeDipartimento, $username);
+            $stmt->bind_param('ss', $username, $nomeDipartimento);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //modifica foto presenter !!!!!!!!!!!
+        //modifica foto presenter 
         public function updateFotoSpeaker($username, $foto){
-            $query ="UPDATE SPEAKER SET Foto=? WHERE UsernameUtente=?";
+            $query ="CALL MODIFICA_FOTO_SPEAKER (?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ss', $foto, $username);
+            $stmt->bind_param('ss', $username, $foto);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //inserisce una nuova risorsa !!!!!!!!!!!
+        //inserisce una nuova risorsa 
         public function insertRisorsa($username, $tutorial, $link, $descrizione){
-            $query= "INSERT INTO RISORSA (UsernameUtente,CodicePresentazione,LinkRisorsa,DescrizioneRisorsa) VALUES (?,?,?,?)";
+            $query= "CALL CREAZIONE_RISORSA (?,?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('siss', $username, $tutorial, $link, $descrizione);
             $stmt->execute();
         }
 
-        //modifica link risorsa !!!!!!!!!!!
+        //modifica link risorsa 
         public function updateLinkRisorsa($username, $codice, $link){
-            $query ="UPDATE RISORSA SET LinkRisorsa=? WHERE UsernameUtente=? AND CodicePresentazione=?";
+            $query ="CALL MODIFICA_LINK_RISORSA (?,?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ssi', $link, $username, $codice);
+            $stmt->bind_param('sis', $username, $codice, $link);
             $stmt->execute();
             $result = $stmt->get_result();
     
             return $stmt->execute();
         }
 
-        //modifica descrizione risorsa !!!!!!!!!!!
+        //modifica descrizione risorsa 
         public function updateDescrizioneRisorsa($username, $codice, $descrizione){
-            $query ="UPDATE RISORSA SET DescrizioneRisorsa=? WHERE UsernameUtente=? AND CodicePresentazione=?";
+            $query ="CALL MODIFICA_DESCRIZIONE_RISORSA (?,?,?)";
             $stmt = $this->db->prepare($query);
-            $stmt->bind_param('ssi', $descrizione, $username, $codice);
+            $stmt->bind_param('sis', $username, $codice, $descrizione);
             $stmt->execute();
             $result = $stmt->get_result();
     
