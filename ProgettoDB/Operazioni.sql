@@ -206,6 +206,7 @@ BEGIN
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM ARTICOLO WHERE(CodicePresentazione=CodicePresentazioneI) AND StatoSvolgimento="Non Coperto");
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		UPDATE ARTICOLO SET UsernameUtente=UsernameUtenteI WHERE CodicePresentazione=CodicePresentazioneI;
+		UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
 	END IF;
 END $
 DELIMITER ;
@@ -455,13 +456,13 @@ DELIMITER ;
 
 /* TRIGGERS */
 
+/*		Inserito nella stored
 DELIMITER $
 CREATE TRIGGER CambioStatoSvolgimento
 AFTER INSERT ON ARTICOLO
 FOR EACH ROW
 UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE(UsernameUtente=NEW.UsernameUtente);
-
-$ DELIMITER ;
+$ DELIMITER ;*/
 
 /*Questo l'ho testato e funziona */
 DELIMITER $
