@@ -80,7 +80,7 @@ BEGIN
     SET CodiceSessioneX =(SELECT COUNT(*) FROM SESSIONE WHERE(Codice=CodiceSessioneI));
     IF(UsernameUtenteX=1 AND CodiceSessioneX=1) THEN
 		INSERT INTO MESSAGGIO(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) 
-        VALUES (CodiceSessioneI,UsernameUtenteI,DATE.NOW(),TestoMessaggioI);
+        VALUES (CodiceSessioneI,UsernameUtenteI,NOW(),TestoMessaggioI);
     END IF;
 END $
 DELIMITER ;

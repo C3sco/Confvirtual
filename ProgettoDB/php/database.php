@@ -155,6 +155,25 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
 
+         //visualizza lista messaggi della sessione selezionata
+         public function getMessaggiBySessione($codice){
+            $query = "SELECT * FROM MESSAGGIO WHERE CodiceSessione = ?";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('i',$codice);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        //inserisce messagggio nella chat della sessione
+        public function insertMessaggio($codice, $username, $testo){
+            $query= "CALL INSERIMENTO_MESSAGGIO (?,?,?)";
+            $stmt = $this->db->prepare($query);
+            $stmt->bind_param('iss', $codice, $username, $testo);
+            $stmt->execute();
+        } 
+
         //visualizza lista presentazioni preferite dell'utente
         public function getListaByUsername($username){
             $query = "SELECT * FROM LISTA WHERE UsernameUtente = ?";
@@ -359,7 +378,7 @@
 
         //inserisce relazione sponsorizzazione sposor-conferenza
         public function insertDisposizione($anno, $acronimo, $nomeSp){
-            $query= "CALL INSERIMENTO_SPONSORINZZAZIONE (?,?,?)";
+            $query= "CALL INSERIMENTO_SPONSORIZZAZIONE (?,?,?)";
             $stmt = $this->db->prepare($query);
             $stmt->bind_param('iss', $anno, $acronimo, $nomeSp);
             $stmt->execute();

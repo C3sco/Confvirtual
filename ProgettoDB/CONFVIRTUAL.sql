@@ -190,7 +190,8 @@ CREATE TABLE MESSAGGIO(
     TestoMessaggio VARCHAR(500),
     PRIMARY KEY(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio),
     FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice) ON DELETE CASCADE,
-    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
+    FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE,
+    FOREIGN KEY(DataMessaggio) REFERENCES GIORNATA(Giorno) ON DELETE CASCADE
     #La chat consente l’inserimento di messaggi solo nell’orario di inizio della sessione, 
     #e si disattiva immediatamente dopo l’orario di fine della stessa.
 ) ENGINE=INNODB;

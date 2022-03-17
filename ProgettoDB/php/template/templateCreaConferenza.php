@@ -161,7 +161,6 @@
             <form action="./creaConferenza.php" method="post" class="row g-3">
             <div class="col-md-6">
                   <label for="inputPassword4" class="form-label">Conferenza:</label>
-                  <!--<input type="text" class="form-control" id="corrente" name="corrente">-->
                   <select class="form-select" name="conferenza" >
                   <option value=""></option>
                     <?php foreach($templateParams['conferenze'] as $conferenza): ?>
