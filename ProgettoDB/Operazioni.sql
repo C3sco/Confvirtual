@@ -493,5 +493,3 @@ CREATE EVENT CompletaConferenza
 	END ;
 $ DELIMITER ;
 
-SELECT * FROM CONFERENZA;
-
