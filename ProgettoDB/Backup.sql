@@ -685,7 +685,7 @@ DELIMITER ;
 
 #Inserimento di uno sponsor
 DELIMITER $
-CREATE PROCEDURE INSERIMENTO_SPONSORINZZAZIONE(IN AnnoEdizioneConferenzaI INT, IN AcronimoConferenzaI VARCHAR(20), 
+CREATE PROCEDURE INSERIMENTO_SPONSORIZZAZIONE(IN AnnoEdizioneConferenzaI INT, IN AcronimoConferenzaI VARCHAR(20), 
 	IN NomeSponsorI VARCHAR(100))
 BEGIN
 	DECLARE AnnoEdizioneConferenzaX INT DEFAULT 0;
@@ -886,31 +886,44 @@ END $
 DELIMITER ;
 
 
+/* TRIGGERS */
 
-DELIMITER $
-CREATE TRIGGER CambioStatoSvolgimento
-AFTER INSERT ON ARTICOLO
-FOR EACH ROW
-UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE(UsernameUtente=NEW.UsernameUtente);
-
-$ DELIMITER ;
-
-CALL ASSOCIAZIONE_PRESENTER("Francesco1", 102);
-select * from articolo;
-
-/*Questo l'ho testato e funziona */
+#aggiornamento del campo NumeroPresentazioni ogni qualvolta si aggiunge una nuova presentazione ad un una sessione della conferenza.
 DELIMITER $
 CREATE TRIGGER AggiuntaPresentazione
 AFTER INSERT ON FORMAZIONE
 FOR EACH ROW
-UPDATE SESSIONE SET NumeroPresentazioni=NumeroPresentazioni+1 WHERE(Codice=NEW.CodiceSessione);
+BEGIN
+	UPDATE SESSIONE SET NumeroPresentazioni=NumeroPresentazioni+1 WHERE(Codice=NEW.CodiceSessione);
+END;
 $ DELIMITER ;
 
-/* EVENTS */
+#aggiornamento del campo TotaleSponsorizzazioni ogni qualvolta si aggiunge un nuovo sponsor ad un una conferenza.
 DELIMITER $
-CREATE EVENT CompletaConferenza ON SCHEDULE EVERY 1 DAY STARTS '2022-03-15 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE CONFERENZA SET StatoSvolgimento="Completata"
- WHERE(CURDATE>(SELECT GIORNATA.Giorno FROM GIORNATA,CONFERENZA
-WHERE(CONFERENZA.AnnoEdizione=GIORNATA.AnnoEdizioneConferenza AND
-CONFERENZA.Acronimo=GIORNATA.AcronimoConferenza)))
+CREATE TRIGGER AggiuntaSponsorizzazione
+AFTER INSERT ON DISPOSIZIONE
+FOR EACH ROW
+BEGIN
+	UPDATE CONFERENZA SET TotaleSponsorizzazioni=TotaleSponsorizzazioni+1 
+    WHERE(AnnoEdizione=NEW.AnnoEdizioneConferenza) AND (Acronimo=NEW.AcronimoConferenza);
+END;
 $ DELIMITER ;
+
+
+/* EVENTS */
+
+#modifica il campo svolgimento di una conferenza: setta il campo a “Completata” non appena la 
+#data corrente eccede di un giorno l’ultima data di svolgimento di una conferenza.
+DELIMITER $
+CREATE EVENT CompletaConferenza 
+	ON SCHEDULE EVERY 1 DAY STARTS '2022-03-15 00:00:00' 
+    ON COMPLETION NOT PRESERVE ENABLE 
+    DO BEGIN
+		UPDATE CONFERENZA SET StatoSvolgimento="Completata" WHERE (CURDATE > 
+			(SELECT GIORNATA.Giorno FROM GIORNATA,CONFERENZA
+			WHERE(AnnoEdizione=AnnoEdizioneConferenza AND Acronimo=AcronimoConferenza)));
+	END ;
+$ DELIMITER ;
+
+SELECT * FROM CONFERENZA;
 
