@@ -1,6 +1,6 @@
 /* STORED PROCEDURES */
 
-#OPERAZIONI UTENTI GENERICI
+/*OPERAZIONI UTENTI GENERICI*/
 
 #Registrazione nuovo utente
 DELIMITER $
@@ -28,7 +28,7 @@ BEGIN
 END $ 
 DELIMITER ;
 
-#Inserimento nuovo speaker (solo username)
+#Inserimento nuovo speaker
 DELIMITER $
 CREATE PROCEDURE REGISTRAZIONE_SPEAKER(IN UsernameUtenteI VARCHAR(100))
 BEGIN 
@@ -40,7 +40,7 @@ BEGIN
 END $ 
 DELIMITER ;
 
-#Inserimento nuovo presenter (solo username)
+#Inserimento nuovo presenter
 DELIMITER $
 CREATE PROCEDURE REGISTRAZIONE_PRESENTER(IN UsernameUtenteI VARCHAR(100))
 BEGIN 
@@ -72,13 +72,19 @@ DELIMITER ;
 
 #Inserimento messaggi nella chat di sessione
 DELIMITER $
-create procedure INSERIMENTO_MESSAGGIO(IN CodiceSessioneI INT, IN UsernameUtenteI VARCHAR(100), IN TestoMessaggioI VARCHAR(500)) 
+CREATE PROCEDURE INSERIMENTO_MESSAGGIO(IN CodiceSessioneI INT, IN UsernameUtenteI VARCHAR(100), IN TestoMessaggioI VARCHAR(500)) 
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodiceSessioneX INT DEFAULT 0;
+    DECLARE InizioSessioneX TIME;
+    DECLARE FineSessioneX TIME;
+	DECLARE GiornoSessioneX DATE;
     SET UsernameUtenteX =(SELECT COUNT(*) FROM UTENTE WHERE(Username=UsernameUtenteI));
     SET CodiceSessioneX =(SELECT COUNT(*) FROM SESSIONE WHERE(Codice=CodiceSessioneI));
-    IF(UsernameUtenteX=1 AND CodiceSessioneX=1) THEN
+    SET InizioSessioneX =(SELECT Inizio FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    SET FineSessioneX =(SELECT Fine FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    SET GiornoSessioneX =(SELECT GiornoGiornata FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    IF(UsernameUtenteX=1 AND CodiceSessioneX=1 AND CURTIME()>=InizioSessioneX AND CURTIME()<=FineSessioneX AND CURDATE()=GiornoSessioneX) THEN
 		INSERT INTO MESSAGGIO(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) 
         VALUES (CodiceSessioneI,UsernameUtenteI,NOW(),TestoMessaggioI);
     END IF;
@@ -100,7 +106,7 @@ END $
 DELIMITER ;
 
 
-#OPERAZIONI AMMINISTRATORE
+/*OPERAZIONI AMMINISTRATORE*/
 
 #Creazione di una nuova conferenza
 DELIMITER $
@@ -142,7 +148,7 @@ BEGIN
 	SET AnnoEdizioneConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	SET AcronimoConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	SET UsernameUtenteX =(SELECT COUNT(*) FROM AMMINISTRATORE WHERE(UsernameUtente=UsernameUtenteI));
-    IF(AnnoEdizioneConferenzaX=1 AND UsernameUtenteX=1) THEN
+    IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND UsernameUtenteX=1) THEN
 		INSERT INTO CREAZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
     END IF;
 END $
@@ -174,9 +180,17 @@ CREATE PROCEDURE INSERIMENTO_PRESENTAZIONI(IN CodiceSessioneI INT, IN CodicePres
 BEGIN
 	DECLARE CodiceSessioneX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
+    DECLARE InizioSessioneX TIME;
+    DECLARE InizioPresentazioneX TIME;
+    DECLARE FineSessioneX TIME;
+    DECLARE FinePresentazioneX TIME;
 	SET CodiceSessioneX =(SELECT COUNT(*) FROM SESSIONE WHERE(Codice=CodiceSessioneI));
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
-	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1) THEN 
+    SET InizioSessioneX =(SELECT Inizio FROM SESSIONE WHERE(Codice=CodiceSessioneI));
+    SET InizioPresentazioneX =(SELECT Inizio FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
+	SET FineSessioneX=(SELECT Fine FROM SESSIONE WHERE(Codice=CodiceSessioneI));
+	SET FinePresentazioneX =(SELECT Fine FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
+	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazione>=InizioSessione AND FineSessioneX>=FinePresentazioneX) THEN 
 		INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES (CodiceSessioneI,CodicePresentazioneI);
 	END IF;
 END $
@@ -202,11 +216,21 @@ CREATE PROCEDURE ASSOCIAZIONE_PRESENTER(IN UsernameUtenteI VARCHAR(100), IN Codi
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
+    DECLARE NomeAutoreX VARCHAR(100);
+    DECLARE CognomeAutoreX VARCHAR(100);
+    DECLARE NomeUtenteX VARCHAR(100);
+    DECLARE CognomeUtenteX VARCHAR(100);
 	SET UsernameUtenteX =(SELECT COUNT(*) FROM PRESENTER WHERE(UsernameUtente=UsernameUtenteI));
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM ARTICOLO WHERE(CodicePresentazione=CodicePresentazioneI) AND StatoSvolgimento="Non Coperto");
-	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
+    SET NomeUtenteX =(SELECT Nome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)));
+    SET CognomeUtenteX =(SELECT Cognome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)));
+    SET NomeAutoreX =(SELECT Nome FROM AUTORE WHERE (CodicePresentazione=CodicePresentazioneI) 
+		AND (Nome =(SELECT Nome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)))));
+    SET CognomeAutoreX =(SELECT Cognome FROM AUTORE WHERE (CodicePresentazione=CodicePresentazioneI)
+		AND (Cognome =(SELECT Cognome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)))));
+    IF(UsernameUtenteX=1 AND CodicePresentazioneX=1 AND NomeAutoreX=NomeUtenteX AND CognomeAutoreX=CognomeUtenteX) THEN
 		UPDATE ARTICOLO SET UsernameUtente=UsernameUtenteI WHERE CodicePresentazione=CodicePresentazioneI;
-		UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
+        UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
 	END IF;
 END $
 DELIMITER ;
@@ -214,7 +238,7 @@ DELIMITER ;
 #Inserimento delle valutazioni sulle presentazioni
 DELIMITER $
 CREATE PROCEDURE INSERIMENTO_VALUTAZIONE(IN CodicePresentazioneI INT, IN UsernameUtenteI VARCHAR(100), IN VotoI INT,
-	IN NoteI VARCHAR(100))
+	IN NoteI VARCHAR(50))
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
@@ -425,15 +449,9 @@ DELIMITER ;
 DELIMITER $
 CREATE PROCEDURE MODIFICA_LINK_RISORSA(IN UsernameUtenteI VARCHAR(100),IN CodicePresentazioneI INT, LinkRisorsaI VARCHAR(100)) 
 BEGIN 
-	DECLARE UsernameUtenteX INT DEFAULT 0;
-    DECLARE CodicePresentazioneX INT DEFAULT 0;
-    SET UsernameUtenteX =(SELECT COUNT(*) FROM RISORSA WHERE(UsernameUtente=UsernameUtenteI));
-    SET CodicePresentazioneX =(SELECT COUNT(*) FROM RISORSA WHERE(CodicePresentazione=CodicePresentazioneI));
-	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
-		UPDATE RISORSA
-		SET LinkRisorsa=LinkRisorsaI
-		WHERE UsernameUtente=UsernameUtenteI AND CodicePresentazione=CodicePresentazioneI;
-	END IF;
+	UPDATE RISORSA
+	SET LinkRisorsa=LinkRisorsaI
+	WHERE UsernameUtente=UsernameUtenteI AND CodicePresentazione=CodicePresentazioneI;
 END $
 DELIMITER ;
 
@@ -441,15 +459,9 @@ DELIMITER ;
 DELIMITER $
 CREATE PROCEDURE MODIFICA_DESCRIZIONE_RISORSA(IN UsernameUtenteI VARCHAR(100),IN CodicePresentazioneI INT, DescrizioneRisorsaI VARCHAR(100)) 
 BEGIN 
-	DECLARE UsernameUtenteX INT DEFAULT 0;
-    DECLARE CodicePresentazioneX INT DEFAULT 0;
-    SET UsernameUtenteX =(SELECT COUNT(*) FROM RISORSA WHERE(UsernameUtente=UsernameUtenteI));
-    SET CodicePresentazioneX =(SELECT COUNT(*) FROM RISORSA WHERE(CodicePresentazione=CodicePresentazioneI));
-	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
-		UPDATE RISORSA
-		SET DescrizioneRisorsa=DescrizioneRisorsaI
-		WHERE UsernameUtente=UsernameUtenteI AND CodicePresentazione=CodicePresentazioneI;
-	END IF;
+	UPDATE RISORSA
+	SET DescrizioneRisorsa=DescrizioneRisorsaI
+	WHERE UsernameUtente=UsernameUtenteI AND CodicePresentazione=CodicePresentazioneI;
 END $
 DELIMITER ;
 
@@ -462,7 +474,7 @@ CREATE TRIGGER AggiuntaPresentazione
 AFTER INSERT ON FORMAZIONE
 FOR EACH ROW
 BEGIN
-	UPDATE SESSIONE SET NumeroPresentazioni=NumeroPresentazioni+1 WHERE(Codice=NEW.CodiceSessione);
+	UPDATE SESSIONE SET NumeroPresentazioni=NumeroPresentazioni+1 WHERE (Codice=NEW.CodiceSessione);
 END;
 $ DELIMITER ;
 
@@ -473,7 +485,7 @@ AFTER INSERT ON DISPOSIZIONE
 FOR EACH ROW
 BEGIN
 	UPDATE CONFERENZA SET TotaleSponsorizzazioni=TotaleSponsorizzazioni+1 
-    WHERE(AnnoEdizione=NEW.AnnoEdizioneConferenza) AND (Acronimo=NEW.AcronimoConferenza);
+    WHERE ((AnnoEdizione=NEW.AnnoEdizioneConferenza) AND (Acronimo=NEW.AcronimoConferenza));
 END;
 $ DELIMITER ;
 
@@ -492,4 +504,3 @@ CREATE EVENT CompletaConferenza
 			WHERE(AnnoEdizione=AnnoEdizioneConferenza AND Acronimo=AcronimoConferenza)));
 	END ;
 $ DELIMITER ;
-

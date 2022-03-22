@@ -3,6 +3,7 @@
 
     $codiceSessione = $_GET["codiceSessione"];
 
+    //inserimento valutazione di una presentazione
     if(empty($_POST['voto']) || empty($_POST['note'])){
         $templateParams["msgErrVal"] = "Errore! Non sono stati inseriti alcuni dati";
     } else {

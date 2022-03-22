@@ -3,14 +3,21 @@ CREATE DATABASE CONFVIRTUAL;
 USE CONFVIRTUAL;
 
 CREATE TABLE CONFERENZA(
-	AnnoEdizione INT DEFAULT 2000,
+	AnnoEdizione INT,
     Acronimo VARCHAR(20),
     Nome VARCHAR(100),
     Logo VARCHAR(100),
     Svolgimento ENUM("Attiva", "Completata") DEFAULT "Attiva",
     TotaleSponsorizzazioni INT DEFAULT 0,
     PRIMARY KEY(AnnoEdizione,Acronimo)
-    #collegare totaleSponsorizzazioni al numero di sposor collegati
+) ENGINE=INNODB;
+
+CREATE TABLE GIORNATA(
+    AnnoEdizioneConferenza INT,
+    AcronimoConferenza VARCHAR(20),
+    Giorno DATE UNIQUE,
+    PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,Giorno),
+	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE SPONSOR(
@@ -20,20 +27,12 @@ CREATE TABLE SPONSOR(
 ) ENGINE=INNODB;
     
 CREATE TABLE DISPOSIZIONE(
-	AnnoEdizioneConferenza INT DEFAULT 2000,
+	AnnoEdizioneConferenza INT,
     AcronimoConferenza VARCHAR(20),
     NomeSponsor VARCHAR(100),
     PRIMARY KEY (AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor),
 	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
     FOREIGN KEY(NomeSponsor) REFERENCES SPONSOR(Nome) ON DELETE CASCADE
-) ENGINE=INNODB;
-
-CREATE TABLE GIORNATA(
-    AnnoEdizioneConferenza INT,
-    AcronimoConferenza VARCHAR(20),
-    Giorno DATE UNIQUE,
-    PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,Giorno),
-	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
 CREATE TABLE SESSIONE(
@@ -48,7 +47,6 @@ CREATE TABLE SESSIONE(
     AcronimoConferenza VARCHAR(20),
 	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
     FOREIGN KEY(GiornoGiornata) REFERENCES GIORNATA(Giorno) ON DELETE CASCADE
-    #collegare NumeroPresentazioni al numero di presentazioni collegate
 ) ENGINE=INNODB;
     
 CREATE TABLE PRESENTAZIONE(
@@ -56,9 +54,6 @@ CREATE TABLE PRESENTAZIONE(
     Inizio TIME,
     Fine TIME,
     NumeroSequenza INT 
-    #non si possono avere prestazioni che eccedano orario di inizio/fine della sessione
-    #PRESENTAZIONE.Inizio >= SESSIONE.Inizio 
-    #PRESENTAZIONE.Fine <= SESSIONE.Fine 
 ) ENGINE=INNODB;
 
 CREATE TABLE FORMAZIONE(
@@ -97,9 +92,9 @@ CREATE TABLE AUTORE(
 ) ENGINE=INNODB;
 
 CREATE TABLE PAROLACHIAVE(
+	CodicePresentazione INT,
     Parola VARCHAR(20),
-    CodicePresentazione INT,
-    PRIMARY KEY(Parola,CodicePresentazione),
+    PRIMARY KEY(CodicePresentazione,Parola),
 	FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
 )ENGINE=INNODB;
 		
@@ -112,7 +107,7 @@ CREATE TABLE TUTORIAL(
 
 CREATE TABLE ISCRIZIONE(
 	AnnoEdizioneConferenza INT,
-    AcronimoConferenza  VARCHAR(20),
+    AcronimoConferenza VARCHAR(20),
     UsernameUtente VARCHAR(100),
     PRIMARY KEY(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente),
 	FOREIGN KEY(AnnoEdizioneConferenza, AcronimoConferenza) REFERENCES CONFERENZA(AnnoEdizione, Acronimo) ON DELETE CASCADE,
@@ -153,20 +148,18 @@ CREATE TABLE PRESENTER(
     NomeUni VARCHAR(100) DEFAULT NULL,
 	NomeDipartimento VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
-    #Un presenter deve essere necessariamente uno degli autori dell’articolo
 ) ENGINE=INNODB;
 
 CREATE TABLE AMMINISTRATORE(
 	UsernameUtente VARCHAR(100) PRIMARY KEY,
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
-    #All’atto della creazione di una nuova conferenza, l’amministratore è anche automaticamente registrato alla stessa
 ) ENGINE=INNODB;
 
 CREATE TABLE VALUTAZIONE(
 	CodicePresentazione INT,
     UsernameUtente VARCHAR(100),
 	Voto INT CHECK(Voto>0 AND Voto<10),
-    Note VARCHAR(100),
+    Note VARCHAR(50),
     PRIMARY KEY(UsernameUtente,CodicePresentazione),
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE,
     FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
@@ -189,8 +182,6 @@ CREATE TABLE MESSAGGIO(
     PRIMARY KEY(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio),
     FOREIGN KEY(CodiceSessione) REFERENCES SESSIONE(Codice) ON DELETE CASCADE,
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE
-    #La chat consente l’inserimento di messaggi solo nell’orario di inizio della sessione, 
-    #e si disattiva immediatamente dopo l’orario di fine della stessa.
 ) ENGINE=INNODB;
     
 CREATE TABLE LISTA(
@@ -457,8 +448,8 @@ INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES 
 INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (401, "Lucia", 9, "Molto bravo il presenter");
 INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (303, "Lucia", 3, "Noiosa");
 INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (304, "Mari", 4, "Poco chiara");
-INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (201, "Lucia", 9, "Molto bravo il presenter");
-INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (202, "Lucia", 9, "Molto bravo il presenter");
+INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (201, "Lucia", 9, "Interessante");
+INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (202, "Lucia", 6, "Da migliorare");
 INSERT INTO VALUTAZIONE(CodicePresentazione, UsernameUtente, Voto, Note) VALUES (101, "Lucia", 9, "Molto bravo il presenter");
 
 INSERT INTO CREAZIONE(AnnoEdizioneConferenza, AcronimoConferenza, UsernameUtente) VALUES (2022, "ICSI", "Mari");
@@ -477,6 +468,8 @@ INSERT INTO LISTA(UsernameUtente,CodicePresentazione) VALUES ("Giacomo00", 204);
 INSERT INTO LISTA(UsernameUtente,CodicePresentazione) VALUES ("Luca", 103);
 INSERT INTO LISTA(UsernameUtente,CodicePresentazione) VALUES ("Luca", 303);
 
+
+/* STORED PROCEDURES */
 
 /*OPERAZIONI UTENTI GENERICI*/
 
@@ -506,7 +499,7 @@ BEGIN
 END $ 
 DELIMITER ;
 
-#Inserimento nuovo speaker (solo username)
+#Inserimento nuovo speaker
 DELIMITER $
 CREATE PROCEDURE REGISTRAZIONE_SPEAKER(IN UsernameUtenteI VARCHAR(100))
 BEGIN 
@@ -518,7 +511,7 @@ BEGIN
 END $ 
 DELIMITER ;
 
-#Inserimento nuovo presenter (solo username)
+#Inserimento nuovo presenter
 DELIMITER $
 CREATE PROCEDURE REGISTRAZIONE_PRESENTER(IN UsernameUtenteI VARCHAR(100))
 BEGIN 
@@ -550,13 +543,19 @@ DELIMITER ;
 
 #Inserimento messaggi nella chat di sessione
 DELIMITER $
-create procedure INSERIMENTO_MESSAGGIO(IN CodiceSessioneI INT, IN UsernameUtenteI VARCHAR(100), IN TestoMessaggioI VARCHAR(500)) 
+CREATE PROCEDURE INSERIMENTO_MESSAGGIO(IN CodiceSessioneI INT, IN UsernameUtenteI VARCHAR(100), IN TestoMessaggioI VARCHAR(500)) 
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodiceSessioneX INT DEFAULT 0;
+    DECLARE InizioSessioneX TIME;
+    DECLARE FineSessioneX TIME;
+	DECLARE GiornoSessioneX DATE;
     SET UsernameUtenteX =(SELECT COUNT(*) FROM UTENTE WHERE(Username=UsernameUtenteI));
     SET CodiceSessioneX =(SELECT COUNT(*) FROM SESSIONE WHERE(Codice=CodiceSessioneI));
-    IF(UsernameUtenteX=1 AND CodiceSessioneX=1) THEN
+    SET InizioSessioneX =(SELECT Inizio FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    SET FineSessioneX =(SELECT Fine FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    SET GiornoSessioneX =(SELECT GiornoGiornata FROM SESSIONE WHERE (Codice=CodiceSessioneI));
+    IF(UsernameUtenteX=1 AND CodiceSessioneX=1 AND CURTIME()>=InizioSessioneX AND CURTIME()<=FineSessioneX AND CURDATE()=GiornoSessioneX) THEN
 		INSERT INTO MESSAGGIO(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) 
         VALUES (CodiceSessioneI,UsernameUtenteI,NOW(),TestoMessaggioI);
     END IF;
@@ -620,7 +619,7 @@ BEGIN
 	SET AnnoEdizioneConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	SET AcronimoConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	SET UsernameUtenteX =(SELECT COUNT(*) FROM AMMINISTRATORE WHERE(UsernameUtente=UsernameUtenteI));
-    IF(AnnoEdizioneConferenzaX=1 AND UsernameUtenteX=1) THEN
+    IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND UsernameUtenteX=1) THEN
 		INSERT INTO CREAZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
     END IF;
 END $
@@ -652,9 +651,17 @@ CREATE PROCEDURE INSERIMENTO_PRESENTAZIONI(IN CodiceSessioneI INT, IN CodicePres
 BEGIN
 	DECLARE CodiceSessioneX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
+    DECLARE InizioSessioneX TIME;
+    DECLARE InizioPresentazioneX TIME;
+    DECLARE FineSessioneX TIME;
+    DECLARE FinePresentazioneX TIME;
 	SET CodiceSessioneX =(SELECT COUNT(*) FROM SESSIONE WHERE(Codice=CodiceSessioneI));
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
-	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1) THEN 
+    SET InizioSessioneX =(SELECT Inizio FROM SESSIONE WHERE(Codice=CodiceSessioneI));
+    SET InizioPresentazioneX =(SELECT Inizio FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
+	SET FineSessioneX=(SELECT Fine FROM SESSIONE WHERE(Codice=CodiceSessioneI));
+	SET FinePresentazioneX =(SELECT Fine FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
+	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazione>=InizioSessione AND FineSessioneX>=FinePresentazioneX) THEN 
 		INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES (CodiceSessioneI,CodicePresentazioneI);
 	END IF;
 END $
@@ -680,10 +687,21 @@ CREATE PROCEDURE ASSOCIAZIONE_PRESENTER(IN UsernameUtenteI VARCHAR(100), IN Codi
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
+    DECLARE NomeAutoreX VARCHAR(100);
+    DECLARE CognomeAutoreX VARCHAR(100);
+    DECLARE NomeUtenteX VARCHAR(100);
+    DECLARE CognomeUtenteX VARCHAR(100);
 	SET UsernameUtenteX =(SELECT COUNT(*) FROM PRESENTER WHERE(UsernameUtente=UsernameUtenteI));
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM ARTICOLO WHERE(CodicePresentazione=CodicePresentazioneI) AND StatoSvolgimento="Non Coperto");
-	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
+    SET NomeUtenteX =(SELECT Nome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)));
+    SET CognomeUtenteX =(SELECT Cognome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)));
+    SET NomeAutoreX =(SELECT Nome FROM AUTORE WHERE (CodicePresentazione=CodicePresentazioneI) 
+		AND (Nome =(SELECT Nome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)))));
+    SET CognomeAutoreX =(SELECT Cognome FROM AUTORE WHERE (CodicePresentazione=CodicePresentazioneI)
+		AND (Cognome =(SELECT Cognome FROM UTENTE,PRESENTER WHERE ((UsernameUtente=UsernameUtenteI) AND (Username=UsernameUtenteI)))));
+    IF(UsernameUtenteX=1 AND CodicePresentazioneX=1 AND NomeAutoreX=NomeUtenteX AND CognomeAutoreX=CognomeUtenteX) THEN
 		UPDATE ARTICOLO SET UsernameUtente=UsernameUtenteI WHERE CodicePresentazione=CodicePresentazioneI;
+        UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
 	END IF;
 END $
 DELIMITER ;
@@ -691,7 +709,7 @@ DELIMITER ;
 #Inserimento delle valutazioni sulle presentazioni
 DELIMITER $
 CREATE PROCEDURE INSERIMENTO_VALUTAZIONE(IN CodicePresentazioneI INT, IN UsernameUtenteI VARCHAR(100), IN VotoI INT,
-	IN NoteI VARCHAR(100))
+	IN NoteI VARCHAR(50))
 BEGIN
 	DECLARE UsernameUtenteX INT DEFAULT 0;
     DECLARE CodicePresentazioneX INT DEFAULT 0;
@@ -957,4 +975,3 @@ CREATE EVENT CompletaConferenza
 			WHERE(AnnoEdizione=AnnoEdizioneConferenza AND Acronimo=AcronimoConferenza)));
 	END ;
 $ DELIMITER ;
-

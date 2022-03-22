@@ -1,36 +1,33 @@
-/* Hide scrollbar for Chrome, Safari and Opera */
+/* Stile generale dell'app web  */
 
-body::-webkit-scrollbar{
-    display: none;
-    overflow-y: scroll; /* Add the ability to scroll */
-}
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-  }
-  
-  li {
-    float: left;
-  }
-  
-  li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 18px 20px;
-    text-decoration: none;
-  }
-  
-  li a:hover:not(.active) {
-    background-color: #111;
-  }
-  
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #303030;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 18px 20px;
+  text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
 .active {
-    background-color: #0400ff;
-  }
+  background-color: #0400ff;
+}
 
 
 
