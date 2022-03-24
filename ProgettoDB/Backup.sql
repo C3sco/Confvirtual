@@ -192,6 +192,13 @@ CREATE TABLE LISTA(
     FOREIGN KEY(CodicePresentazione) REFERENCES PRESENTAZIONE(Codice) ON DELETE CASCADE
 ) ENGINE=INNODB;
 
+CREATE TABLE LOGS(
+    Utente VARCHAR(100),
+    Operazione ENUM("Insert","Update","Remove") DEFAULT "Insert",
+    Tabella VARCHAR(50),
+    Orario TIME 
+) ENGINE=INNODB;
+
 
 
 /* POPOLAMENTO DELLE TABELLE */
@@ -483,6 +490,7 @@ BEGIN
 	IF(UsernameX<>1) THEN
 		INSERT INTO UTENTE(Username,Passwordd,Nome,Cognome,DataNascita,LuogoNascita) 
         VALUES (UsernameI,PasswordI,NomeI,CognomeI,DataNascitaI,LuogoNascitaI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameI, "UTENTE", CURTIME());
 	END IF;
 END $ 
 DELIMITER ;
@@ -537,6 +545,7 @@ BEGIN
     SET UsernameUtenteX =(SELECT COUNT(*) FROM UTENTE WHERE(Username=UsernameUtenteI));
 	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND UsernameUtenteX=1) THEN
 		INSERT INTO ISCRIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,UsernameUtente) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,UsernameUtenteI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "ISCRIZIONE", CURTIME());
     END IF;
 END $
 DELIMITER ;
@@ -558,6 +567,7 @@ BEGIN
     IF(UsernameUtenteX=1 AND CodiceSessioneX=1 AND CURTIME()>=InizioSessioneX AND CURTIME()<=FineSessioneX AND CURDATE()=GiornoSessioneX) THEN
 		INSERT INTO MESSAGGIO(CodiceSessione,UsernameUtente,DataMessaggio,TestoMessaggio) 
         VALUES (CodiceSessioneI,UsernameUtenteI,NOW(),TestoMessaggioI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "MESSAGGIO", CURTIME());
     END IF;
 END $
 DELIMITER ;
@@ -572,6 +582,7 @@ BEGIN
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
     IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO LISTA(UsernameUtente,CodicePresentazione) VALUES (UsernameUtenteI,CodicePresentazioneI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "LISTA", CURTIME());
     END IF;
 END $
 DELIMITER ;
@@ -591,6 +602,7 @@ BEGIN
 	IF(AnnoEdizioneX<>1 AND AcronimoX<>1) THEN
 		INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo) 
         VALUES (AnnoEdizioneI,AcronimoI,NomeI,LogoI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "CONFERENZA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -605,6 +617,7 @@ BEGIN
 	SET AcronimoConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1) THEN
 		INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza,Giorno) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,GiornoI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "GIORNATA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -641,6 +654,7 @@ BEGIN
     IF(GiornoGiornataX=1 AND AnnoEdizioneX=1 AND AcronimoX=1) THEN
 		INSERT INTO SESSIONE(Codice,Titolo,Inizio,Fine,Link,GiornoGiornata,AnnoEdizioneConferenza,AcronimoConferenza) 
 		VALUES (CodiceI,TitoloI,InizioI,FineI,LinkI,GiornoGiornataI,AnnoEdizioneConferenzaI,AcronimoConferenzaI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SESSIONE", CURTIME());
     END IF;
 END $
 DELIMITER ;
@@ -663,6 +677,7 @@ BEGIN
 	SET FinePresentazioneX =(SELECT Fine FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
 	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazione>=InizioSessione AND FineSessioneX>=FinePresentazioneX) THEN 
 		INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES (CodiceSessioneI,CodicePresentazioneI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "PRESENTAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -677,6 +692,7 @@ BEGIN
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM TUTORIAL WHERE(CodicePresentazione=CodicePresentazioneI));
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO DIMOSTRAZIONE(UsernameUtente,CodicePresentazione) VALUES (UsernameUtenteI,CodicePresentazioneI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "DIMOSTRAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -702,6 +718,7 @@ BEGIN
     IF(UsernameUtenteX=1 AND CodicePresentazioneX=1 AND NomeAutoreX=NomeUtenteX AND CognomeAutoreX=CognomeUtenteX) THEN
 		UPDATE ARTICOLO SET UsernameUtente=UsernameUtenteI WHERE CodicePresentazione=CodicePresentazioneI;
         UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "ARTICOLO", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -718,6 +735,7 @@ BEGIN
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO VALUTAZIONE(CodicePresentazione,UsernameUtente,Voto,Note) 
         VALUES (CodicePresentazioneI,UsernameUtenteI,VotoI,NoteI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "VALUTAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -730,6 +748,7 @@ BEGIN
     SET NomeX =(SELECT COUNT(*) FROM SPONSOR WHERE(Nome=NomeI));
 	IF(NomeX<>1) THEN
 		INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES (NomeI,LogoI,ImportoI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SPONSOR", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -748,6 +767,7 @@ BEGIN
 	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND NomeSponsorX=1) THEN
 		INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES
 		(AnnoEdizioneConferenzaI,AcronimoConferenzaI,NomeSponsorI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "DISPOSIZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -766,6 +786,7 @@ BEGIN
 		UPDATE PRESENTER
 		SET Curriculum=CurriculumI,Foto=FotoI,NomeUni=NomeUniI,NomeDipartimento=NomeDipartimentoI
 		WHERE UsernameUtente=UsernameUtenteI;
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "PRESENTER", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -841,6 +862,7 @@ BEGIN
 		UPDATE SPEAKER
 		SET Curriculum=CurriculumI,Foto=FotoI,NomeUni=NomeUniI,NomeDipartimento=NomeDipartimentoI
 		WHERE UsernameUtente=UsernameUtenteI;
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SPEAKER", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -912,6 +934,7 @@ BEGIN
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO RISORSA(UsernameUtente,CodicePresentazione,LinkRisorsa,DescrizioneRisorsa) 
         VALUES (UsernameUtenteI,CodicePresentazioneI,LinkRisorsaI,DescrizioneRisorsaI);
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "RISORSA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
