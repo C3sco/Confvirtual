@@ -633,6 +633,16 @@
             return $result->fetch_all(MYSQLI_ASSOC);
         }
         
+        //ritorna la tabella dei log
+        public function getLogs(){
+            $query = "SELECT * FROM LOGS";
+            $stmt = $this->db->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        
 
     }
 ?>

@@ -1,3 +1,5 @@
+/* STRUTTURA */
+
 DROP DATABASE IF EXISTS CONFVIRTUAL;
 CREATE DATABASE CONFVIRTUAL;
 USE CONFVIRTUAL;
@@ -193,8 +195,9 @@ CREATE TABLE LISTA(
 ) ENGINE=INNODB;
 
 CREATE TABLE LOGS(
+	Id INT AUTO_INCREMENT PRIMARY KEY,
     Utente VARCHAR(100),
-    Operazione ENUM("Insert","Update","Remove") DEFAULT "Insert",
+    Operazione VARCHAR(50) DEFAULT "Insert",
     Tabella VARCHAR(50),
     Orario TIME 
 ) ENGINE=INNODB;
@@ -206,7 +209,7 @@ CREATE TABLE LOGS(
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
 	VALUES (2022, "ICSI", "International Conference on Swarm Intelligence", "icsi.png", "Attiva", 2);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
-	VALUES (2022, "FRUCT", "IEEE FRUCT Conference", "fruct.png", "Completata", 1);
+	VALUES (2022, "FRUCT", "IEEE FRUCT Conference", "fruct.png", "Attiva", 1);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
 	VALUES (2022, "AIVR", "Conference on Artificial Intelligence and Virtual Reality", "aivr.jpg", "Attiva", 1);
 INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo,Svolgimento,TotaleSponsorizzazioni) 
@@ -675,7 +678,7 @@ BEGIN
     SET InizioPresentazioneX =(SELECT Inizio FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
 	SET FineSessioneX=(SELECT Fine FROM SESSIONE WHERE(Codice=CodiceSessioneI));
 	SET FinePresentazioneX =(SELECT Fine FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
-	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazione>=InizioSessione AND FineSessioneX>=FinePresentazioneX) THEN 
+	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazioneX>=InizioSessioneX AND FineSessioneX>=FinePresentazioneX) THEN 
 		INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES (CodiceSessioneI,CodicePresentazioneI);
         INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "PRESENTAZIONE", CURTIME());
 	END IF;
@@ -988,13 +991,16 @@ $ DELIMITER ;
 
 #modifica il campo svolgimento di una conferenza: setta il campo a “Completata” non appena la 
 #data corrente eccede di un giorno l’ultima data di svolgimento di una conferenza.
+CREATE VIEW MAXGIORNO(GiornoFine,AcronimoConf) AS (
+	SELECT MAX(GIORNATA.Giorno),CONFERENZA.Acronimo FROM CONFERENZA,GIORNATA WHERE(CONFERENZA.AnnoEdizione=GIORNATA.AnnoEdizioneConferenza AND
+	CONFERENZA.Acronimo=GIORNATA.AcronimoConferenza AND CONFERENZA.Svolgimento="Attiva") GROUP BY CONFERENZA.Acronimo
+); 
+
 DELIMITER $
 CREATE EVENT CompletaConferenza 
-	ON SCHEDULE EVERY 1 DAY STARTS '2022-03-15 00:00:00' 
-    ON COMPLETION NOT PRESERVE ENABLE 
-    DO BEGIN
-		UPDATE CONFERENZA SET StatoSvolgimento="Completata" WHERE (CURDATE > 
-			(SELECT GIORNATA.Giorno FROM GIORNATA,CONFERENZA
-			WHERE(AnnoEdizione=AnnoEdizioneConferenza AND Acronimo=AcronimoConferenza)));
-	END ;
+	ON SCHEDULE EVERY 2 SECOND DO
+	BEGIN
+		UPDATE CONFERENZA SET Svolgimento="Completata" 
+		WHERE(Acronimo =(SELECT AcronimoConf FROM MAXGIORNO WHERE GiornoFine < CURDATE()) AND AnnoEdizione<>0);
+	END;
 $ DELIMITER ;

@@ -12,7 +12,7 @@
 
     //iscrizione ad una conferenza
     $dbh->insertIscrizione($annoEdizione, $acronimo, $username);
-    $templateParams["msg"] = "Registrazione alla conferenza avventura con successo!";
+    $templateParams["msg"] = "Registrazione alla conferenza avvenuta con successo!";
 
     require 'paginaUtente.php';
 ?>
