@@ -32,6 +32,17 @@
             </div>
           </div>
         <?php endif; ?>
+        <?php if (isset($templateParams['error'])): ?>
+        <div class="alert alert-info" role="alert">
+            <div class="row">
+              <div class="col-8 col-md-6">
+                <h4><?php echo ($templateParams['error'])?></h4>
+              </div> 
+            </div>
+          </div>
+          <?php endif; ?>
+
+
 
         <h2 style="margin: 20px;">Operazioni Utente</h2>
         <h3>

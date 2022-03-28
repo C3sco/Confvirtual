@@ -12,6 +12,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     </head>
 
     <body>
@@ -24,14 +25,15 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
 
-                <h1 style="margin-bottom: 40px;">Chat Sessione</h1>
+                <h1 style="margin-bottom: 40px;"><b>Chat Sessione</b></h1>
 
                 <div class="card" style="margin-bottom: 20px;">
                     <div class="card-body">
                         <?php foreach($templateParams['messaggi'] as $messaggio): ?>
-                            <p class="card-text">Utente: <?php echo $messaggio["UsernameUtente"]?></p>
-                            <p class="card-text">Data: <?php echo $messaggio["DataMessaggio"]?></p>
-                            <p class="card-text"> Testo: <?php echo $messaggio["TestoMessaggio"]?></p>
+                            <p class="card-text"><b>Utente</b>: <?php echo $messaggio["UsernameUtente"]?>
+                            
+                            <div style="text-align:right"><b>Data</b>: <?php echo $messaggio["DataMessaggio"]?></div></p>
+                            <p class="card-text"><i><center><?php echo $messaggio["TestoMessaggio"]?></i></center></p2>
                             <hr>
                         <?php endforeach; ?>
                     </div>
