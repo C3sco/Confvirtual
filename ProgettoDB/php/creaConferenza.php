@@ -37,7 +37,7 @@
             $anno =  $templateParams["conferenza"][0]["AnnoEdizione"];
                     
             $dbh->insertDataConferenza($acronimo, $anno, $data);
-            $templateParams["msgDataConferenza"] = "Conferenza creata con successo!";
+            $templateParams["msgDataConferenza"] = "Giornata della conferenza aggiunta con successo!";
 
         }     
     }
@@ -64,7 +64,7 @@
             $link = $_POST['link'];
         
             $dbh -> insertSessione($codice, $titolo, $inizio, $fine, $link, $giornata, $anno, $acronimo);
-            $templateParams["msgSessione"] = "Conferenza creata con successo!";
+            $templateParams["msgSessione"] = "Sessione aggiunta con successo!";
 
         }        
     }

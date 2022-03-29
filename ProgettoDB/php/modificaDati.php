@@ -31,22 +31,22 @@
 
             if($curriculum!=""){
                 $dbh->updateCurriculumPresenter($_SESSION['username'], $curriculum);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($foto!=""){
                 $dbh->updateFotoPresenter($_SESSION['username'], $foto);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($nomeUni!=""){
                 $dbh->updateNomeUniPresenter($_SESSION['username'], $nomeUni);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($nomeDipartimento!=""){
                 $dbh->updateNomeDipartimentoPresenter($_SESSION['username'], $nomeDipartimento);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }           
         }
     }
@@ -80,22 +80,22 @@
 
             if($curriculum!=""){
                 $dbh->updateCurriculumSpeaker($_SESSION['username'], $curriculum);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($foto!=""){
                 $dbh->updateFotoSpeaker($_SESSION['username'], $foto);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($nomeUni!=""){
                 $dbh->updateNomeUniSpeaker($_SESSION['username'], $nomeUni);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }
 
             if($nomeDipartimento!=""){
                 $dbh->updateNomeDipartimentoSpeaker($_SESSION['username'], $nomeDipartimento);
-                $templateParams["msgModDati"] = "Dati inseriti con successo!";
+                $templateParams["msgModDati"] = "Dati modificati con successo!";
             }           
         }
     }

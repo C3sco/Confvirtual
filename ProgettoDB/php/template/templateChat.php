@@ -25,6 +25,36 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
 
+                <?php if (isset($templateParams['msgMess'])): ?>
+                    <div class="alert alert-info" role="alert">
+                        <div class="row">
+                            <div class="col-8 col-md-6">
+                                <h4><?php echo ($templateParams['msgMess'])?></h4>
+                            </div> 
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($templateParams['msgErroreMess'])): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="row">
+                            <div class="col-8 col-md-6">
+                                <h4><?php echo ($templateParams['msgErroreMess'])?></h4>
+                            </div> 
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($templateParams['errorMess'])): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <div class="row">
+                            <div class="col-8 col-md-6">
+                                <h4><?php echo ($templateParams['errorMess'])?></h4>
+                            </div> 
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <h1 style="margin-bottom: 40px;"><b>Chat Sessione</b></h1>
 
                 <div class="card" style="margin-bottom: 20px;">
@@ -49,7 +79,7 @@
                 <h1 style="margin-top: 40px; margin-bottom: 40px;"> Aggiungi messaggio alla chat </h1>
 
                 <h4 class="mb-3">
-                <form method="post" action="./messaggio.php?codiceSessione=<?php echo $codiceSessione?>">
+                <form method="post" action="./chat.php?codiceSessione=<?php echo $codiceSessione?>">
 
                     <div class="col-md-6">
                         <label for="inputEmail4" class="form-label">Testo:</label>

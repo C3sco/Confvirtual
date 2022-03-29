@@ -13,6 +13,21 @@
 
     //prende le presentazioni a partire dalla sessione selezionata
     $templateParams["presentazioni"] = $dbh->getPresentazioniBySessione($templateParams["sessione"][0]["Codice"]);
-    
+
+     //inserimento valutazione di una presentazione
+     if (isset($_POST['btnVoto'])) {
+        if(empty($_POST['voto']) || empty($_POST['note'])){
+            $templateParams["msgErrVal"] = "Errore! Non sono stati inseriti alcuni dati";
+        } else {
+            $username = $_SESSION["username"];
+            $voto = $_POST["voto"];
+            $note = $_POST["note"];
+            $presentazione = $_GET["presentazione"];
+
+            $dbh->insertValutazione($presentazione, $username, $voto, $note);
+            $templateParams["msgValutazione"] = "Valutazione inserita con successo!";
+        }
+    }
+
     require 'template/templatePresentazioni.php';
 ?>

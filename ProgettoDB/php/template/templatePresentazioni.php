@@ -81,7 +81,7 @@
               && ((($dbh->getArticoloByCodice($presentazione["Codice"])!=null) && $dbh->getArticoloByCodice($presentazione["Codice"])[0]["StatoSvolgimento"]=="Coperto") 
               || $dbh->getTutorialByCodice($presentazione["Codice"])!=null)): ?>
 
-              <form method="post" action="./valutazione.php?presentazione=<?php echo $presentazione["Codice"]?>&codiceSessione=<?php echo $codiceSessione?>">
+              <form method="post" action="./presentazioni.php?presentazione=<?php echo $presentazione["Codice"]?>&codiceSessione=<?php echo $codiceSessione?>">
 
                 <div class="col-md-4">
                   <label for="inputEmail4" class="form-label">Voto:</label>

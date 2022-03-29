@@ -32,6 +32,7 @@
             </div>
           </div>
         <?php endif; ?>
+
         <?php if (isset($templateParams['error'])): ?>
         <div class="alert alert-info" role="alert">
             <div class="row">
@@ -40,9 +41,7 @@
               </div> 
             </div>
           </div>
-          <?php endif; ?>
-
-
+        <?php endif; ?>
 
         <h2 style="margin: 20px;">Operazioni Utente</h2>
         <h3>

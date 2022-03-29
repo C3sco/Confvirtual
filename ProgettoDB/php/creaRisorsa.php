@@ -28,12 +28,12 @@
 
         if($link!=""){
             $dbh->updateLinkRisorsa($username, $tutorial, $link);
-            $templateParams["msgModificaRisorsa"] = "Dati risorsa aggiornati con successo!";
+            $templateParams["msgModificaRisorsa"] = "Dati risorsa modificati con successo!";
         }
 
         if($descrizione!=""){
             $dbh->updateDescrizioneRisorsa($username, $tutorial, $descrizione);
-            $templateParams["msgModificaRisorsa"] = "Dati risorsa aggiornati con successo!";
+            $templateParams["msgModificaRisorsa"] = "Dati risorsa modificati con successo!";
         }       
     }
 
