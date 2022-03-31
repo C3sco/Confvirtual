@@ -160,7 +160,7 @@ CREATE TABLE AMMINISTRATORE(
 CREATE TABLE VALUTAZIONE(
 	CodicePresentazione INT,
     UsernameUtente VARCHAR(100),
-	Voto INT CHECK(Voto>0 AND Voto<10),
+	Voto INT CHECK(Voto>=0 AND Voto<=10),
     Note VARCHAR(50),
     PRIMARY KEY(UsernameUtente,CodicePresentazione),
     FOREIGN KEY(UsernameUtente) REFERENCES UTENTE(Username) ON DELETE CASCADE,

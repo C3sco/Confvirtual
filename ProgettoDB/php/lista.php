@@ -15,16 +15,12 @@
             $username = $_SESSION["username"];
             $codicePres = $_POST['presentazione'];
             try{
-            $dbh -> insertLista($username, $codicePres);
-            $templateParams["msgLista"] = "Presentazione inserita in lista con successo!";
-        }     catch(Exception $err){
-            $templateParams['error'] = "Questa presentazione e' già presente nella tua lista!";
-
-
-
+                $dbh -> insertLista($username, $codicePres);
+                $templateParams["msgLista"] = "Presentazione inserita in lista con successo!";
+            } catch(Exception $err){
+                $templateParams['error'] = "Questa presentazione e' già presente nella tua lista!";
+            }
         }
-
-    }
     }
     
     require 'template/templateLista.php';

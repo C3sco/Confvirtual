@@ -33,11 +33,11 @@
           </div>
         <?php endif; ?>
 
-        <?php if (isset($templateParams['error'])): ?>
+        <?php if (isset($templateParams['errorSp'])): ?>
           <div class="alert alert-danger" role="alert">
             <div class="row">
               <div class="col-8 col-md-6">
-                <h4><?php echo ($templateParams['error'])?></h4>
+                <h4><?php echo ($templateParams['errorSp'])?></h4>
               </div> 
             </div>
           </div>
@@ -96,6 +96,16 @@
             <div class="row">
               <div class="col-8 col-md-6">
                 <h4><?php echo ($templateParams['msgAssociazionePA'])?></h4>
+              </div> 
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <?php if (isset($templateParams['errorPr'])): ?>
+          <div class="alert alert-danger" role="alert">
+            <div class="row">
+              <div class="col-8 col-md-6">
+                <h4><?php echo ($templateParams['errorPr'])?></h4>
               </div> 
             </div>
           </div>

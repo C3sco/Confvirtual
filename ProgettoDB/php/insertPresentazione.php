@@ -13,13 +13,11 @@
             $codiceSess = $_POST['sessione'];
             $codicePres = $_POST['presentazione'];
             try{
-            $dbh -> insertFormazione($codiceSess, $codicePres);
-           #$templateParams["msgPresentazione"] = "Presentazione inserita con successo!";
-        }  
-        catch(Exception $err){
-            $templateParams['error'] = "Questa presentazione fa già parte della sessione!";
-        }
-    }   
+                $dbh -> insertFormazione($codiceSess, $codicePres);
+            } catch(Exception $err){
+                $templateParams['error'] = "Questa presentazione fa già parte della sessione!";
+            }
+        }   
     }
     
     require 'template/templateInsertPresentazione.php';

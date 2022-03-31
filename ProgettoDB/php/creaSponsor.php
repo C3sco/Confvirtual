@@ -13,10 +13,10 @@
             $logo = $_POST['logo'];
             $importo = $_POST['importo'];
             try{            
-            $dbh -> insertSponsor($nome, $logo, $importo);
-            $templateParams['conferenze'] = $dbh->getConferenze();
-            $templateParams["msgCreazioneSponsor"] = "Sponsor inserito con successo!";
-            }catch(Exception $err){
+                $dbh -> insertSponsor($nome, $logo, $importo);
+                $templateParams['conferenze'] = $dbh->getConferenze();
+                $templateParams["msgCreazioneSponsor"] = "Sponsor inserito con successo!";
+            } catch(Exception $err){
                 $templateParams['error'] = "Sponsor già presente!";
             }
         }
@@ -36,7 +36,7 @@
             $dbh -> insertDisposizione($anno, $acronimo, $sponsor);
             $templateParams["msgAssociazioneSponsor"] = "Associazione avvenuta con successo!";
         }catch(Exception $err){
-            $templateParams['error'] = "Errore!";
+            $templateParams['errorS'] = "Relazione di sponsorizzazione già presente!";
         }     
     }
 }

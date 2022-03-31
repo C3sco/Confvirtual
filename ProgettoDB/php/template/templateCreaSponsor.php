@@ -55,27 +55,6 @@
           </div>
         <?php endif; ?>
 
-        <?php if (isset($templateParams['msgAssociazioneSponsor'])): ?>
-          <div class="alert alert-info" role="alert">
-            <div class="row">
-              <div class="col-8 col-md-6">
-                <h4><?php echo ($templateParams['msgAssociazioneSponsor'])?></h4>
-              </div> 
-            </div>
-          </div>
-        <?php endif; ?>
-
-        <?php if (isset($templateParams['msgErroreAssSponsor'])): ?>
-          <div class="alert alert-danger" role="alert">
-            <div class="row">
-              <div class="col-8 col-md-6">
-                <h4><?php echo ($templateParams['msgErroreAssSponsor'])?></h4>
-              </div> 
-            </div>
-          </div>
-        <?php endif; ?>
-
-
         <h1><br>Aggiunta Sponsor</h1><br>
         
         <form action="./creaSponsor.php" method="post" class="row g-3">
@@ -110,6 +89,35 @@
       <div class="col-md-1"></div>
       <div class="col-md-10">
 
+      <?php if (isset($templateParams['msgAssociazioneSponsor'])): ?>
+          <div class="alert alert-info" role="alert">
+            <div class="row">
+              <div class="col-8 col-md-6">
+                <h4><?php echo ($templateParams['msgAssociazioneSponsor'])?></h4>
+              </div> 
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <?php if (isset($templateParams['errorS'])): ?>
+          <div class="alert alert-danger" role="alert">
+            <div class="row">
+              <div class="col-8 col-md-6">
+                <h4><?php echo ($templateParams['errorS'])?></h4>
+              </div> 
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <?php if (isset($templateParams['msgErroreAssSponsor'])): ?>
+          <div class="alert alert-danger" role="alert">
+            <div class="row">
+              <div class="col-8 col-md-6">
+                <h4><?php echo ($templateParams['msgErroreAssSponsor'])?></h4>
+              </div> 
+            </div>
+          </div>
+        <?php endif; ?>
 
         <h1><br>Associazione Conferenza - Sponsor</h1><br>
         

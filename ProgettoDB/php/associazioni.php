@@ -15,10 +15,10 @@
             $username = $_POST['speaker'];
             $codice = $_POST['tutorial'];
             try{
-            $dbh -> insertDimostrazione($username, $codice);
-            $templateParams["msgAssociazioneSP"] = "Associazione avvenuta con successo!";
-            }catch(Exception $err){
-                $templateParams['error'] = "Associazione già presente";
+                $dbh -> insertDimostrazione($username, $codice);
+                $templateParams["msgAssociazioneSP"] = "Associazione avvenuta con successo!";
+            } catch(Exception $err){
+                $templateParams['errorSp'] = "Associazione già presente";
             }
         }     
     }
@@ -32,10 +32,9 @@
             $codice = $_POST['articolo'];
             try{
             $dbh -> updatePresenterArticolo($username, $codice);
-        }catch(Exception $err){
-            $templateParams['error'] = "Associazione già presente";
-        }
-            #$templateParams["msgAssociazionePA"] = "Associazione avvenuta con successo!";
+            } catch(Exception $err){
+                $templateParams['errorPr'] = "Associazione già presente";
+            }
         }     
     }
     

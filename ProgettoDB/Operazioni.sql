@@ -119,12 +119,13 @@ CREATE PROCEDURE CREAZIONE_CONFERENZA(IN AnnoEdizioneI INT, IN AcronimoI VARCHAR
 BEGIN
 	DECLARE AnnoEdizioneX INT DEFAULT 0;
     DECLARE AcronimoX INT DEFAULT 0;
+
 	SET AnnoEdizioneX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneI AND Acronimo=AcronimoI));
 	SET AcronimoX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneI AND Acronimo=AcronimoI));
 	IF(AnnoEdizioneX<>1 AND AcronimoX<>1) THEN
 		INSERT INTO CONFERENZA(AnnoEdizione,Acronimo,Nome,Logo) 
         VALUES (AnnoEdizioneI,AcronimoI,NomeI,LogoI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "CONFERENZA", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "CONFERENZA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -139,7 +140,7 @@ BEGIN
 	SET AcronimoConferenzaX =(SELECT COUNT(*) FROM CONFERENZA WHERE(AnnoEdizione=AnnoEdizioneConferenzaI AND Acronimo=AcronimoConferenzaI));
 	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1) THEN
 		INSERT INTO GIORNATA(AnnoEdizioneConferenza,AcronimoConferenza,Giorno) VALUES (AnnoEdizioneConferenzaI,AcronimoConferenzaI,GiornoI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "GIORNATA", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "GIORNATA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -176,7 +177,7 @@ BEGIN
     IF(GiornoGiornataX=1 AND AnnoEdizioneX=1 AND AcronimoX=1) THEN
 		INSERT INTO SESSIONE(Codice,Titolo,Inizio,Fine,Link,GiornoGiornata,AnnoEdizioneConferenza,AcronimoConferenza) 
 		VALUES (CodiceI,TitoloI,InizioI,FineI,LinkI,GiornoGiornataI,AnnoEdizioneConferenzaI,AcronimoConferenzaI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SESSIONE", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "SESSIONE", CURTIME());
     END IF;
 END $
 DELIMITER ;
@@ -199,7 +200,7 @@ BEGIN
 	SET FinePresentazioneX =(SELECT Fine FROM PRESENTAZIONE WHERE(Codice=CodicePresentazioneI));
 	IF(CodiceSessioneX=1 AND CodicePresentazioneX=1 AND InizioPresentazioneX>=InizioSessioneX AND FineSessioneX>=FinePresentazioneX) THEN 
 		INSERT INTO FORMAZIONE(CodiceSessione,CodicePresentazione) VALUES (CodiceSessioneI,CodicePresentazioneI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "PRESENTAZIONE", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "PRESENTAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -214,7 +215,7 @@ BEGIN
     SET CodicePresentazioneX =(SELECT COUNT(*) FROM TUTORIAL WHERE(CodicePresentazione=CodicePresentazioneI));
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO DIMOSTRAZIONE(UsernameUtente,CodicePresentazione) VALUES (UsernameUtenteI,CodicePresentazioneI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "DIMOSTRAZIONE", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "DIMOSTRAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -240,7 +241,7 @@ BEGIN
     IF(UsernameUtenteX=1 AND CodicePresentazioneX=1 AND NomeAutoreX=NomeUtenteX AND CognomeAutoreX=CognomeUtenteX) THEN
 		UPDATE ARTICOLO SET UsernameUtente=UsernameUtenteI WHERE CodicePresentazione=CodicePresentazioneI;
         UPDATE ARTICOLO SET StatoSvolgimento="Coperto" WHERE CodicePresentazione=CodicePresentazioneI;
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "ARTICOLO", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "ARTICOLO", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -270,7 +271,7 @@ BEGIN
     SET NomeX =(SELECT COUNT(*) FROM SPONSOR WHERE(Nome=NomeI));
 	IF(NomeX<>1) THEN
 		INSERT INTO SPONSOR(Nome,Logo,Importo) VALUES (NomeI,LogoI,ImportoI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SPONSOR", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "SPONSOR", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -289,7 +290,7 @@ BEGIN
 	IF(AnnoEdizioneConferenzaX=1 AND AcronimoConferenzaX=1 AND NomeSponsorX=1) THEN
 		INSERT INTO DISPOSIZIONE(AnnoEdizioneConferenza,AcronimoConferenza,NomeSponsor) VALUES
 		(AnnoEdizioneConferenzaI,AcronimoConferenzaI,NomeSponsorI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "DISPOSIZIONE", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "DISPOSIZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -506,7 +507,7 @@ END;
 $ DELIMITER ;
 
 
-/* EVENT */
+/* EVENTS */
 
 #modifica il campo svolgimento di una conferenza: setta il campo a “Completata” non appena la 
 #data corrente eccede di un giorno l’ultima data di svolgimento di una conferenza.

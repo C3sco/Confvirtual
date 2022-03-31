@@ -24,8 +24,8 @@
             $note = $_POST["note"];
             $presentazione = $_GET["presentazione"];
             try{
-            $dbh->insertValutazione($presentazione, $username, $voto, $note);
-            $templateParams["msgValutazione"] = "Valutazione inserita con successo!";
+                $dbh->insertValutazione($presentazione, $username, $voto, $note);
+                $templateParams["msgValutazione"] = "Valutazione inserita con successo!";
             }catch(Exception $err){
                 $templateParams['error'] = "Valutazione già presente!";
             }
