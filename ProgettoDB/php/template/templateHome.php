@@ -59,6 +59,5 @@
         </div>
       </div>
     </div>
-    <a href="../template/titolo.html">.</a>
   </body>
 </html>
