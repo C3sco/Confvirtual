@@ -23,7 +23,6 @@
 
     <div class="row">
       <div class="col-md-1"></div>  
-      <div class="col-md-1"></div> 
       <div class="col-md-10">
 
         <?php if (isset($templateParams['msg'])): ?>
@@ -46,78 +45,62 @@
           </div>
           <?php endif; ?>
 
-          
-        <div class="card" style="width: 80rem; height:12rem; margin: 10px; text-align:center">
-          <h2 style="margin: 20px; text-align:center"><b>Operazioni Utente</b></h2>
-          <form method="get" action="./lista.php">
-             <button class="butt"> Visualizzazione e Inserimento Lista Presentazioni Favorite</button></form>
-        </div>
-        <br>
+          <div class="card" style="height:12rem; margin: 10px; text-align:center">
+            <h2 style="margin: 20px; text-align:center"><b>Operazioni Utente</b></h2>
+            <form method="get" action="./lista.php">
+              <button class="butt"> Visualizzazione e Inserimento Lista Presentazioni Favorite</button>
+            </form>
+          </div>
+          <br>
     
         <?php if(isset($templateParams["speaker"])): ?>
 
-          
-          <div class="card" style="width: 80rem; height:17rem; margin: 10px; text-align:center">
-          <h2 style="margin: 20px; text-align:center"><b>Operazioni Speaker</b></h2>
-            <par>
-          
+          <div class="card" style="height:17rem; margin: 10px; text-align:center">
+            <h2 style="margin: 20px; text-align:center"><b>Operazioni Speaker</b></h2>
             <form method="get" action="./modificaDati.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento e Modifica Dati Personali</a>
-             </button></form>
-             <form method="get" action="./creaRisorsa.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento e Modifica Risorse Aggiuntivee</a>
-             </button></form><form method="get" action="./associazioni.php">
-             </par></div>
-
-
-
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento e Modifica Dati Personali</a></button>
+            </form>
+            <form method="get" action="./creaRisorsa.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento e Modifica Risorse Aggiuntivee</a></button>
+            </form>
+          </div>
 
         <?php elseif(isset($templateParams["amministratore"])): ?>
           
-          <div class="card" style="width: 80rem; height:27rem; margin: 10px; text-align:center">
-          <h2 style="margin: 20px; text-align:center"><b>Operazioni Amministratore</b></h2>
-          <centro>
+          <div class="card" style="height:27rem; margin: 10px; text-align:center">
+            <h2 style="margin: 20px; text-align:center"><b>Operazioni Amministratore</b></h2>
             <form method="get" action="./creaConferenza.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Creazione Nuova Conferenza / Sessione
-             </button></form>
-             <form method="get" action="./insertPresentazione.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento Presentazione
-             </button></form><form method="get" action="./associazioni.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Associazioni Relatori-Presentazioni
-             </button></form><form method="get" action="./visualizzaValutazioni.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Visualizzazione Valutazioni Presentazione
-             </button></form><form method="get" action="./creaSponsor.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Creazione e Associazione Sponsor
-             </button></form>
-        </centro>
-            
-  <!--
-              <a class="fs-4" href="./creaConferenza.php" style="color: black; text-decoration: none;" >&emsp;• Creazione Nuova Conferenza / Sessione</a><br>
-              <a class="fs-4" href="./insertPresentazione.php"  style="color: black; text-decoration: none;" >&emsp;• Inserimento Presentazione</a><br>
-              <a class="fs-4" href="./associazioni.php" style="color: black; text-decoration: none;" >&emsp;• Associazioni Relatori-Presentazioni</a><br>
-              <a class="fs-4" href="./visualizzaValutazioni.php" style="color: black; text-decoration: none;" >&emsp;• Visualizzazione Valutazioni Presentazione</a><br>
-              <a class="fs-4" href="./creaSponsor.php" style="color: black; text-decoration: none;" >&emsp;• Creazione e Associazione Sponsor</a><br>
-              <br><hr><br> -->
-              </div> 
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Creazione Nuova Conferenza / Sessione
+            </button></form>
+            <form method="get" action="./insertPresentazione.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento Presentazione
+            </button></form>
+            <form method="get" action="./associazioni.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Associazioni Relatori-Presentazioni
+            </button></form>
+            <form method="get" action="./visualizzaValutazioni.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Visualizzazione Valutazioni Presentazione
+            </button></form>
+            <form method="get" action="./creaSponsor.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Creazione e Associazione Sponsor
+            </button></form>
+          </div> 
               
         <?php elseif(isset($templateParams["presenter"])): ?>
           
-          
-          <div class="card" style="width: 80rem; height:12rem; margin: 10px; text-align:center">
-          <h2 style="margin: 20px; text-align:center"><b>Operazioni Presenter</b></h2>
-          <h3>
-        <button class="butt2">
-          <a class="fs-4" href="./modificaDati.php" style="color: black; text-decoration: none;" >&emsp;Inserimento e Modifica Dati Personali</a>
-        </button> <br>
-          <br>  <br>
-        </h3></div>
+          <div class="card" style="height:12rem; margin: 10px; text-align:center">
+            <h2 style="margin: 20px; text-align:center"><b>Operazioni Presenter</b></h2>
+            <form method="get" action="./modificaDati.php">
+              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Inserimento e Modifica Dati Personali
+            </button> </form>
+            <br><br><br>
+          </div>
        
-        
         <?php endif?>
       </div>
     </div>
-    <br>
-              <br>
+    <br><br>
+
     <div class="row">
       <div class="col-md-1"></div>  
       <div class="col-md-10">
