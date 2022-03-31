@@ -21,9 +21,8 @@
       </ul>
 
     <div class="container py-4">
-      <header class="pb-3 mb-4 border-bottom">
-      
-        <span class="display-5"><b><i><center>CONFVIRTUAL</center></i></b></span>
+      <header class="pb-3 mb-4 border-bottom" style="text-align:center">
+        <span class="display-5"><b><i>CONFVIRTUAL</i></b></span>
         
       </header>
 
