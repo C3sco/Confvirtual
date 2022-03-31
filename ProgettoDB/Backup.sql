@@ -739,7 +739,7 @@ BEGIN
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO VALUTAZIONE(CodicePresentazione,UsernameUtente,Voto,Note) 
         VALUES (CodicePresentazioneI,UsernameUtenteI,VotoI,NoteI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "VALUTAZIONE", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Amministratore", "VALUTAZIONE", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -790,7 +790,7 @@ BEGIN
 		UPDATE PRESENTER
 		SET Curriculum=CurriculumI,Foto=FotoI,NomeUni=NomeUniI,NomeDipartimento=NomeDipartimentoI
 		WHERE UsernameUtente=UsernameUtenteI;
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "PRESENTER", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Presenter", "PRESENTER", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -866,7 +866,7 @@ BEGIN
 		UPDATE SPEAKER
 		SET Curriculum=CurriculumI,Foto=FotoI,NomeUni=NomeUniI,NomeDipartimento=NomeDipartimentoI
 		WHERE UsernameUtente=UsernameUtenteI;
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "SPEAKER", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Speaker", "SPEAKER", CURTIME());
 	END IF;
 END $
 DELIMITER ;
@@ -938,7 +938,7 @@ BEGIN
 	IF(UsernameUtenteX=1 AND CodicePresentazioneX=1) THEN
 		INSERT INTO RISORSA(UsernameUtente,CodicePresentazione,LinkRisorsa,DescrizioneRisorsa) 
         VALUES (UsernameUtenteI,CodicePresentazioneI,LinkRisorsaI,DescrizioneRisorsaI);
-        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES (UsernameUtenteI, "RISORSA", CURTIME());
+        INSERT INTO LOGS(Utente,Tabella,Orario) VALUES ("Speaker", "RISORSA", CURTIME());
 	END IF;
 END $
 DELIMITER ;
