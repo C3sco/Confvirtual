@@ -63,7 +63,7 @@
                             <p class="card-text"><b>Utente</b>: <?php echo $messaggio["UsernameUtente"]?>
                             
                             <div style="text-align:right"><b>Data</b>: <?php echo $messaggio["DataMessaggio"]?></div></p>
-                            <p class="card-text"><i><center><?php echo $messaggio["TestoMessaggio"]?></i></center></p2>
+                            <p class="card-text" style="text-align:center"><i><?php echo $messaggio["TestoMessaggio"]?></i></p2>
                             <hr>
                         <?php endforeach; ?>
                     </div>
