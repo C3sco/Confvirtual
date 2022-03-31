@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');
+
+
+
+.butt {
+  width: 700px;
+  height: 60px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid #91C9FF;
+  outline: none;
+  transition: 1s ease-in-out;
+  border-radius: 10px;
+  font-size: 20px;
+  
+}
+
+
+.butt:hover {
+  transition: 1s ease-in-out;
+  background: #4F95DA;
+}
+
+.butt:hover svg {
+  stroke-dashoffset: -480;
+}
+
+.butt span {
+  color: white;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.butt2 {
+    width: 700px;
+    height: 60px;
+    cursor: pointer;
+    background: transparent;
+    border: 1px solid #91C9FF;
+    outline: none;
+    transition: 1s ease-in-out;
+    border-radius: 10px;
+    font-size: 20px;
+    
+  }
+  
+  
+  .butt2:hover {
+    transition: 1s ease-in-out;
+    background: #4F95DA;
+  }
+  
+  .butt2:hover svg {
+    stroke-dashoffset: -480;
+  }
+  
+  .butt2 span {
+    color: white;
+    font-size: 18px;
+    font-weight: 100;
+  }
+
+  .vericaltext{
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+   }
+
+ 
