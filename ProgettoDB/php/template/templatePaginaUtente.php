@@ -89,7 +89,7 @@
              </button></form><form method="get" action="./visualizzaValutazioni.php">
              <button class="butt" style="color: black; text-decoration: none;" >&emsp; Visualizzazione Valutazioni Presentazione</a>
              </button></form><form method="get" action="./creaSponsor.php">
-             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Creazione e Associazione Sponsor</a>
+             <button class="butt" style="color: black; text-decoration: none;" >&emsp; Aggiunta e Associazione Sponsor</a>
              </button></form>
              
             
